@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote for Candidates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .candidate {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .candidate label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .candidate input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .candidate img {
+            max-width: 50px;
+            height: auto;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .candidate p {
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Vote for Candidates</h1>
+    <p style="font-size: 19px; font-weight: bold; text-align: center; color: red;">{% if messages %}
+        <center>{% for message in messages %}
+            <div class="success-message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}</center></p> 
+    <form method="POST">
+        {% csrf_token %}
+        {% for candidate in candidates %}
+            <div class="candidate">
+                <label>
+                    <input type="radio" name="candidate_id" value="{{ candidate.id }}" required>
+                    <strong>{{ candidate.user.first_name }} {{ candidate.user.last_name }}</strong> - {{ candidate.position.name }}
+                    
+                    {% if candidate.image %}
+                        <img src="{{ candidate.image.url }}" alt="{{ candidate.user.username }}">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    
+                    <p>Votes: {{ candidate.votes_count }}</p>
+                </label>
+            </div>
+        {% endfor %}
+        <button type="submit">Vote</button>
+    </form>
+</div>
+
+</body>
+</html>

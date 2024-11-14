@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Election Results</title>
+    <style>
+        /* Basic Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+        }
+
+        /* Chart Styling */
+        .chart {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* PDF Button Styling */
+        .pdf-link {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 12px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .pdf-link:hover {
+            background-color: #0056b3;
+        }
+
+        /* Table Styling */
+        .results-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+        .results-table th, .results-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .results-table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .results-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .results-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Candidate Image Styling */
+        .candidate-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .results-table th, .results-table td {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .candidate-image {
+                width: 40px;
+                height: 40px;
+            }
+            .pdf-link {
+                width: 100%;
+                padding: 10px 0;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Election Results</h1>
+
+{% if message %}
+<p style="color: red; font-weight: bold;">{{ message }}</p>
+{% endif %}
+
+<div class="chart">
+    <img src="data:image/png;base64,{{ chart_url }}" alt="Election Results Chart" style="max-width: 100%; height: auto;">
+</div>
+
+<table class="results-table">
+    <thead>
+        <tr>
+            <th>Candidate</th>
+            <th>Image</th>
+            <th>Position</th>
+            <th>Total Votes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for position, candidates in position_votes.items %}
+            {% for candidate_name, votes, image_url in candidates %}
+            <tr>
+                <td>{{ candidate_name }}</td>
+                <td>
+                    {% if image_url %}
+                        <img src="{{ image_url }}" alt="Candidate Image" class="candidate-image">
+                    {% else %}
+                        <span>No Image</span>
+                    {% endif %}
+                </td>
+                {% if forloop.first %}
+                    <td rowspan="{{ candidates|length }}">{{ position }}</td>
+                {% endif %}
+                <td>{{ votes }}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="?generate_pdf=true" class="pdf-link">Download Results as PDF</a>
+</div>
+
+</body>
+</html>
+
+
+
+
+

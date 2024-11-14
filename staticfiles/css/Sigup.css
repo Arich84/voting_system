@@ -1,0 +1,151 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #f0f4c3, #81d4fa);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto; /* Enable scrolling if content overflows */
+}
+
+/* Container */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 380px;
+    overflow: hidden;
+    text-align: center;
+    margin: 20px;
+    max-height: 90vh; /* Limit height to make it more scrollable */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Form Styles */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    margin-bottom: 18px;
+    color: #ff3b3f;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 6px;
+    background: #f0f4c3;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    font-size: 14px;
+}
+
+input:hover {
+    transform: translateY(-2px);
+    background: #dce775;
+}
+
+input:focus {
+    background: #e1f5fe;
+    box-shadow: 0 0 5px rgba(255, 59, 63, 0.6);
+    outline: none;
+}
+
+/* CAPTCHA container */
+.captcha-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.captcha-container img {
+    width: 50%;
+    max-width: 150px; /* Adjust as needed */
+    border-radius: 6px;
+}
+
+.captcha-container input {
+    width: calc(50% - 10px); /* Adjusts the input width */
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #f0f4c3;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Button Styles */
+.register-btn {
+    background: linear-gradient(90deg, #ff3b3f, #ff6f61);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 8px;
+}
+
+.register-btn:hover {
+    background: linear-gradient(90deg, #ff6f61, #ff3b3f);
+    transform: translateY(-2px);
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* Responsive Styles */
+@media (max-width: 500px) {
+    .container {
+        padding: 15px;
+        max-height: 80vh; /* Ensure it's not too tall on small screens */
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    input {
+        font-size: 12px;
+    }
+
+    .register-btn {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+}
+
+@media (min-width: 1200px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 400px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+}

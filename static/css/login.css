@@ -1,0 +1,134 @@
+/* login.css */
+
+/* Body and Background */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Login Container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.login-box {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 20px;
+}
+
+/* Hover Effect for Login Box */
+.login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Title Styling */
+h2 {
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center; 
+}
+
+/* Input Group */
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.input-group label {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #555;
+    width: 30%;
+    text-align: left;
+}
+
+.input-group input {
+    width: 68%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #6a82fb;
+    box-shadow: 0 0 8px rgba(106, 130, 251, 0.2);
+    outline: none;
+}
+
+/* Button Styling */
+.btn.login-btn {
+    background-color: #6a82fb;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 30px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 1rem;
+}
+
+.btn.login-btn:hover {
+    background-color: #5145cd;
+    transform: translateY(-3px);
+}
+
+/* Links Styling */
+.forgot-password,
+.register-link {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.forgot-password a,
+.register-link a {
+    color: #6a82fb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password a:hover,
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.register-link p {
+    color: #333;
+}
+
+/* Responsive for Smaller Devices */
+@media (max-width: 768px) {
+    .input-group label {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-group input {
+        width: 100%;
+    }
+}

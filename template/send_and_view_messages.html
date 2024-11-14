@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ recipient.username }}</title>
+    <style>
+        /* Basic Styles */
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .message-history {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .sent {
+            background-color: #e1ffc7;
+            text-align: right;
+        }
+
+        .received {
+            background-color: #f1f1f1;
+            text-align: left;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .send-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .message img {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .chat-container {
+                padding: 15px;
+            }
+
+            .message-history {
+                max-height: 250px;
+                padding: 8px;
+            }
+
+            .input-container {
+                flex-direction: column;
+            }
+
+            .message-input {
+                margin-bottom: 10px;
+            }
+
+            .send-btn {
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .chat-container {
+                padding: 10px;
+            }
+
+            .message-history {
+                max-height: 200px;
+                padding: 5px;
+            }
+
+            .input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .send-btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <h2>Chat with {{ recipient.username }}</h2>
+
+    <!-- Message history container -->
+    <div class="message-history" id="messageHistory">
+        {% for message in messages %}
+            <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                <p>{{ message.content }}</p>
+                {% if message.image %}
+                    <img src="{{ message.image.url }}" alt="Image">
+                {% endif %}
+                <small>{{ message.timestamp }}</small>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Input for new message -->
+    <div class="input-container">
+        <input type="text" id="messageInput" class="message-input" placeholder="Type a message...">
+        <input type="file" id="imageInput" class="message-input" accept="image/*">
+        <button onclick="sendMessage()" class="send-btn">Send</button>
+    </div>
+</div>
+
+<script>
+// Set lastMessageId based on the last message's ID, or 0 if no messages exist
+let lastMessageId = {% if messages|length > 0 %}{{ messages.last.id }}{% else %}0{% endif %};
+
+// Function to send a message
+function sendMessage() {
+    const content = document.getElementById('messageInput').value;
+    const imageFile = document.getElementById('imageInput').files[0];
+
+    if (!content.trim() && !imageFile) {
+        alert("Please enter a message or select an image.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("content", content);
+    formData.append("image", imageFile);
+
+    fetch("", {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'Message sent successfully') {
+            document.getElementById('messageInput').value = '';
+            document.getElementById('imageInput').value = '';
+            fetchMessages();
+        } else {
+            alert("Failed to send message.");
+        }
+    });
+}
+
+// Function to fetch new messages
+function fetchMessages() {
+    fetch(`?last_message_id=${lastMessageId}`)
+        .then(response => response.json())
+        .then(data => {
+            const messageHistory = document.getElementById('messageHistory');
+            data.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(msg.sender === "{{ request.user.username }}" ? 'sent' : 'received');
+                messageDiv.innerHTML = `<p>${msg.content}</p>`;
+                if (msg.image_url) {
+                    messageDiv.innerHTML += `<img src="${msg.image_url}" alt="Image">`;
+                }
+                messageDiv.innerHTML += `<small>${msg.timestamp}</small>`;
+                messageHistory.appendChild(messageDiv);
+                lastMessageId = msg.id;  // Update lastMessageId to the latest message
+            });
+            messageHistory.scrollTop = messageHistory.scrollHeight;
+        });
+}
+
+// Polling to fetch new messages every 3 seconds
+setInterval(fetchMessages, 2000);
+</script>
+
+</body>
+</html>

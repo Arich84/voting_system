@@ -1,0 +1,10 @@
+<div class="row">
+    {% for stat in stats %}
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h5>{{ stat.title }}</h5>
+                <p>{{ stat.count }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>

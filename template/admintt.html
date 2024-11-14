@@ -1,0 +1,120 @@
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar">
+        <div class="profile">
+            <a href="{% url 'update_profile_image_page' %}">
+                {% if request.user.profile_image %}
+                <img src="{{ request.user.profile_image.url }}" alt="Profile Image" class="profile-image">
+                {% else %}
+                <img src="{% static 'image/default_profile.png' %}" alt="Default Profile Image" class="default_profile">
+                {% endif %}
+            </a>
+            <h4>{{ user.username }}</h4>
+            <!-- Form for removing the profile image -->
+            {% if request.user.profile_image %}
+            <form method="POST" action="{% url 'remove_profile_image' %}">
+                {% csrf_token %}
+                <button type="submit" class="remove-button">Remove Profile Image</button>
+            </form>
+            {% endif %}
+
+        </div>
+        <a href="{% url 'home' %}" aria-label="Home"><i class="fas fa-home-alt"></i> Home</a>
+
+        <div>
+            <a href="javascript:void(0);" aria-label="Personal Info"
+                onclick="toggleDropdown('Personal-Info-dropdown')"><i class="fas fa-user"></i> Personal Info</a>
+            <div class="dropdown Personal-Info-dropdown">
+                <a href="{% url 'user_profile' %}">Personal Details</a>
+            </div>
+        </div>
+
+        <a href="javascript:void(0);" aria-label="Manage Users" onclick="toggleDropdown('user-dropdown')"><i
+                class="fas fa-users"></i> Manage Users</a>
+        <div class="dropdown user-dropdown">
+            <a href="{% url 'register_admin' %}" aria-label="Register Admin">Register Admin</a>
+            <a href="{% url 'user_management' %}" aria-label="View Users">View Users</a>
+            <a href="{% url 'admin_management' %}" aria-label="view Admin">view Admin</a>
+            <a href="{% url 'user_input' %}" aria-label="Comparison Database">Comparison Data</a>
+            <a href="{% url 'insert_program_and_level' %}" aria-label="Edit level/Program">Edit
+                level/Program/department</a>
+        </div>
+
+
+        <a href="javascript:void(0);" aria-label="Election Management"
+            onclick="toggleDropdown('Election-management-dropdown')"><i class="fas fa-vote-yea"></i>Election
+            Management</a>
+        <div class="dropdown Election-management-dropdown">
+            <a href="{% url 'custom_admin_view' %}" aria-label="Election Phase">Election Phase</a>
+            <a href="{% url 'manage_positions' %}" aria-label="Manage position">Manage position</a>
+            <a href="{% url 'voting_dashboard' %}" aria-label="View Votes">View Votes</a>
+            <a href="{% url 'custom_admin_image' %}" aria-label="Slide">Slide</a>
+            <a href="{% url 'create_announcement' %}" aria-label="Announcement">Announcement</a>
+        </div>
+
+        <a href="javascript:void(0);" aria-label="Manage Candidates" onclick="toggleDropdown('candidate-dropdown')"><i
+                class="fas fa-user-check"></i> Manage Candidates</a>
+        <div class="dropdown candidate-dropdown">
+            <a href="{% url 'admin_view_candidate_applications' %}" aria-label="Candidates">Candidates</a>
+            <a href="{% url 'candidates' %}" aria-label="View Candidates">ApproveCandidates</a>
+        </div>
+
+
+        <a href="javascript:void(0);" aria-label="feedbackDropdown" onclick="toggleDropdown('feedbackDropdown')"><i
+                class="fas fa-comment-alt"></i> Feedback</a>
+        <div class="dropdown feedbackDropdown">
+            <a href="{% url 'admin_feedback_page' %}">Feedback</a>
+        </div>
+
+
+
+        <a href="javascript:void(0);" aria-label="Settings" onclick="toggleDropdown('Settings-dropdown')"><i
+                class="fas fa-cogs"></i> Settings</a>
+        <div class="dropdown Settings-dropdown">
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </div>
+
+
+
+        <a href="{% url 'logout' %}" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    </div>
+    </div>
+
+    <div class="container">
+
+
+        <div class="statistics">
+            <div class="stat-card total-users">
+                <i class="fas fa-users"></i>
+                <h4>Total Users</h4>
+                <p>{{ total_users }}</p>
+            </div>
+            <div class="stat-card active-users">
+                <i class="fas fa-check-circle"></i>
+                <h4>Active Users</h4>
+                <p>{{ active_users }}</p>
+            </div>
+
+            <div class="stat-card active-users">
+                <i class="fas fa-user-check"></i>
+                <h3>verified users</h3>
+                <p>{{ active_users }}</p>
+            </div>
+
+            <div class="stat-card total-admin">
+                <i class="fas fa-user-shield"></i>
+                <h4>Total Admins</h4>
+                <p>{{ total_admins }}</p>
+            </div>
+        </div>
+
+       
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 V_FPOG. All rights reserved.</p>
+    </div>
+</body>

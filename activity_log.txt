@@ -1,0 +1,11 @@
+2024-11-13 23:55:47,474 - INFO - C:\Users\tonyr\Documents\project\automatedvotesystem\automatedvote\settings.py changed, reloading.
+2024-11-13 23:57:17,657 - WARNING - Not Found: /favicon.ico
+2024-11-14 01:25:51,069 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:25:55,332 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:00,372 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:04,360 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:10,672 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:14,122 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:19,107 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:20,080 - WARNING - Not Found: /accounts/login/
+2024-11-14 01:26:24,923 - WARNING - Not Found: /accounts/login/

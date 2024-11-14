@@ -1,0 +1,448 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMtxS1urwLxD92FfqqcYl1IWdBCz4e2ODeQz2" crossorigin="anonymous">
+    <style>
+        :root {
+            --primary-bg: #f8f9fa;
+            --sidebar-bg: #343a40;
+            --primary-accent: #007bff;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --header-bg: #007bff;
+            --footer-bg: #343a40;
+            --link-color: #ffffff;
+            --hover-bg: #495057;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: var(--primary-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            color: var(--link-color);
+            width: 220px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            padding: 20px 10px;
+            box-shadow: 2px 0 10px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .sidebar h2 {
+            color: var(--primary-accent);
+            margin: 10px 0;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .sidebar a {
+            color: var(--link-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            display: flex;
+            align-items: left;
+            text-align: left;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 5px 0;
+            justify-content: flex-start;
+            /* Align items to the left */
+        }
+
+        .sidebar a:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .dropdown {
+            display: none;
+            padding-left: 18px;
+            /* Indent dropdown items */
+
+        }
+
+        .dropdown a {
+            padding: 5px 15px;
+        }
+
+        .container {
+            margin-left: 270px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .profile img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px var(--shadow);
+            padding: 20px;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .statistics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .statistics {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            /* Allows the cards to wrap on smaller screens */
+            margin: 20px 0;
+            /* Spacing around the statistics section */
+            background-color: #f8f9fa;
+            /* Light gray background */
+            padding: 20px;
+            /* Padding for the statistics container */
+            border-radius: 10px;
+            /* Rounded corners for the container */
+        }
+
+        .stat-card {
+            background-color: #ffffff;
+            /* White background for cards */
+            border: 1px solid #dee2e6;
+            /* Light gray border */
+            border-radius: 8px;
+            /* Rounded corners for cards */
+            padding: 15px;
+            /* Padding inside each card */
+            flex: 1;
+            /* Flex properties to control size and responsiveness */
+            margin: 10px;
+            /* Margin between cards */
+            text-align: center;
+            /* Center-align text */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            transition: transform 0.2s;
+            /* Smooth transition for hover effect */
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            /* Lift effect on hover */
+        }
+
+        .stat-card h4 {
+            color: #343a40;
+            /* Dark gray for heading */
+            margin: 10px 0;
+            /* Spacing above and below heading */
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            /* Font size for user counts */
+            font-weight: bold;
+            /* Bold text for emphasis */
+            color: #343a40;
+            /* Dark gray for paragraph text */
+        }
+
+        /* Icon colors */
+        .total-users i {
+            color: #007bff;
+            /* Blue for Total Users */
+        }
+
+        .active-users i {
+            color: #28a745;
+            /* Green for Active Users */
+        }
+
+        .total-candidates i {
+            color: #ffc107;
+            /* Yellow for Total Candidates */
+        }
+
+        .total-admin i {
+            color: #dc3545;
+            /* Red for Total Admins */
+        }
+
+        .total-superuser i {
+            color: #17a2b8;
+            /* Cyan for Total Superusers */
+        }
+
+
+        .recent-activity {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px var(--shadow);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--primary-accent);
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activity-list li {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid var(--primary-accent);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+
+            color: black;
+            border-top: 1px solid #ddd;
+            width: 100%;
+            margin-top: auto;
+        }
+
+         /* Responsive Sidebar */
+         .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+            background: var(--primary-accent);
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-left: 0;
+                max-width: 100%;
+            }
+
+            .sidebar {
+                width: 220px;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+
+        .remove-button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-button:hover {
+            background-color: #ff3333;
+        }
+    </style>
+     <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        function toggleDropdown(dropdownClass) {
+            const dropdown = document.querySelector(`.${dropdownClass}`);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar">
+        <div class="profile">
+            <a href="{% url 'update_profile_image_page' %}">
+                {% if request.user.profile_image %}
+                <img src="{{ request.user.profile_image.url }}" alt="Profile Image" class="profile-image">
+                {% else %}
+                <img src="{% static 'image/default_profile.png' %}" alt="Default Profile Image" class="default_profile">
+                {% endif %}
+            </a>
+            <h4>{{ user.username }}</h4>
+            <!-- Form for removing the profile image -->
+            {% if request.user.profile_image %}
+            <form method="POST" action="{% url 'remove_profile_image' %}">
+                {% csrf_token %}
+                <button type="submit" class="remove-button">Remove Profile Image</button>
+            </form>
+            {% endif %}
+
+        </div>
+        <a href="{% url 'home' %}" aria-label="Home"><i class="fas fa-home-alt"></i> Home</a>
+
+        <div>
+            <a href="javascript:void(0);" aria-label="Personal Info"
+                onclick="toggleDropdown('Personal-Info-dropdown')"><i class="fas fa-user"></i> Personal Info</a>
+            <div class="dropdown Personal-Info-dropdown">
+                <a href="{% url 'user_profile' %}">Personal Details</a>
+            </div>
+        </div>
+
+        <a href="javascript:void(0);" aria-label="Manage Users" onclick="toggleDropdown('user-dropdown')"><i
+                class="fas fa-users"></i> Manage Users</a>
+        <div class="dropdown user-dropdown">
+            <a href="{% url 'register_admin' %}" aria-label="Register Admin">Register Admin</a>
+            <a href="{% url 'user_management' %}" aria-label="View Users">View Users</a>
+            <a href="{% url 'admin_management' %}" aria-label="view Admin">view Admin</a>
+            <a href="{% url 'user_input' %}" aria-label="Comparison Database">Comparison Data</a>
+            <a href="{% url 'insert_program_and_level' %}" aria-label="Edit level/Program">Edit
+                level/Program/department</a>
+        </div>
+
+
+        <a href="javascript:void(0);" aria-label="Election Management"
+            onclick="toggleDropdown('Election-management-dropdown')"><i class="fas fa-vote-yea"></i>Election
+            Management</a>
+        <div class="dropdown Election-management-dropdown">
+            <a href="{% url 'custom_admin_view' %}" aria-label="Election Phase">Election Phase</a>
+            <a href="{% url 'manage_positions' %}" aria-label="Manage position">Manage position</a>
+            <a href="{% url 'voting_dashboard' %}" aria-label="View Votes">View Votes</a>
+            <a href="{% url 'custom_admin_image' %}" aria-label="Slide">Slide</a>
+            <a href="{% url 'create_announcement' %}" aria-label="Announcement">Announcement</a>
+        </div>
+
+        <a href="javascript:void(0);" aria-label="Manage Candidates" onclick="toggleDropdown('candidate-dropdown')"><i
+                class="fas fa-user-check"></i> Manage Candidates</a>
+        <div class="dropdown candidate-dropdown">
+            <a href="{% url 'admin_view_candidate_applications' %}" aria-label="Candidates">Candidates</a>
+            <a href="{% url 'candidates' %}" aria-label="View Candidates">ApproveCandidates</a>
+        </div>
+
+
+        <a href="javascript:void(0);" aria-label="feedbackDropdown" onclick="toggleDropdown('feedbackDropdown')"><i
+                class="fas fa-comment-alt"></i> Feedback</a>
+        <div class="dropdown feedbackDropdown">
+            <a href="{% url 'admin_feedback_page' %}">Feedback</a>
+        </div>
+
+
+
+        <a href="javascript:void(0);" aria-label="Settings" onclick="toggleDropdown('Settings-dropdown')"><i
+                class="fas fa-cogs"></i> Settings</a>
+        <div class="dropdown Settings-dropdown">
+            <a href="{% url 'change_password' %}">Change Password</a>
+        </div>
+
+
+
+        <a href="{% url 'logout' %}" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+    </div>
+    </div>
+
+    <div class="container">
+
+
+        <div class="statistics">
+            <div class="stat-card total-users">
+                <i class="fas fa-users"></i>
+                <h4>Total Users</h4>
+                <p>{{ total_users }}</p>
+            </div>
+            <div class="stat-card active-users">
+                <i class="fas fa-check-circle"></i>
+                <h4>Active Users</h4>
+                <p>{{ active_users }}</p>
+            </div>
+
+            <div class="stat-card active-users">
+                <i class="fas fa-user-check"></i>
+                <h3>verified users</h3>
+                <p>{{ verifiy_users }}</p>
+            </div>
+
+            <div class="stat-card total-admin">
+                <i class="fas fa-user-shield"></i>
+                <h4>Total Admins</h4>
+                <p>{{ total_admins }}</p>
+            </div>
+        </div>
+
+       
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 V_FPOG. All rights reserved.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Roles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #343a40;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            max-width: 400px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .recent-activities {
+            margin-top: 30px;
+        }
+        .recent-activities table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85em;
+        }
+        .recent-activities th {
+            background-color: #6c757d;
+            color: white;
+            font-weight: bold;
+        }
+        .recent-activities td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+        }
+        .clear-activity {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .back-button {
+            
+            
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Display Messages -->
+    {% if messages %}
+        <div class="alert">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="search-container">
+        {% if request.user.is_superuser %}
+        <a href="{% url 'superuser_dashboard' %}" class="back-button">Back to Dashboard</a>
+    {% else %}
+        <p>You do not have permission to access this page.</p>
+    {% endif %}
+        <input type="text" id="searchQuery" placeholder="Search Superusers or Admins..." onkeyup="searchRoles()">
+    </div>
+
+    <h2>Manage Superusers</h2>
+<table id="superuserTable">
+    <thead>
+        <tr>
+            <th>Superuser Name</th>
+            <th>Assigned Permissions</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if superusers %}
+            {% for superuser in superusers %}
+                <tr>
+                    <td>{{ superuser.username }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'manage_roles' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="role_id" value="{{ superuser.id }}">
+                            <select name="permissions" multiple>
+                                {% for permission in permissions %}
+                                    <option value="{{ permission.id }}"
+                                        {% if permission in superuser.user_permissions.all %}selected{% endif %}>
+                                        {{ permission.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="button-group">
+                                <button type="button" onclick="selectAll(this)">Select All</button>
+                                <button type="submit" name="update_permissions">Update Permissions</button>
+                                <button type="submit" name="delete_permission" onclick="return confirm('Are you sure you want to remove selected permissions?');">Remove Permission</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'manage_roles' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="role_id" value="{{ superuser.id }}">
+                            <button type="submit" name="delete_superuser" onclick="return confirm('Are you sure you want to delete this superuser?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">No superusers found.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<h2>Manage Admins</h2>
+<table id="adminTable">
+    <thead>
+        <tr>
+            <th>Admin Name</th>
+            <th>Assigned Permissions</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if admins %}
+            {% for admin in admins %}
+                <tr>
+                    <td>{{ admin.username }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'manage_roles' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="role_id" value="{{ admin.id }}">
+                            <select name="permissions" multiple>
+                                {% for permission in permissions %}
+                                    <option value="{{ permission.id }}"
+                                        {% if permission in admin.user_permissions.all %}selected{% endif %}>
+                                        {{ permission.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="button-group">
+                                <button type="button" onclick="selectAll(this)">Select All</button>
+                                <button type="submit" name="update_permissions">Update Permissions</button>
+                                <button type="submit" name="delete_permission" onclick="return confirm('Are you sure you want to remove selected permissions?');">Remove Permission</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{% url 'manage_roles' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="role_id" value="{{ admin.id }}">
+                            <button type="submit" name="delete_admin" onclick="return confirm('Are you sure you want to delete this admin?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">No admins found.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<h2>Recent Activities</h2>
+<table id="activityTable">
+    <thead>
+        <tr>
+            <th>Activity Description</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in recent_activities %}
+            <tr>
+                <td>{{ activity }}</td>
+                <td>{{ activity.timestamp }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<form method="POST" action="{% url 'clear_recent_activities' %}">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Are you sure you want to clear recent activities?');">Clear Recent Activities</button>
+</form>
+
+
+<script>
+    function selectAll(button) {
+        const select = button.parentElement.previousElementSibling;
+        for (let option of select.options) {
+            option.selected = true;
+        }
+    }
+
+    function searchRoles() {
+        const query = document.getElementById('searchQuery').value.toLowerCase();
+        const superuserRows = document.querySelectorAll('#superuserTable tbody tr');
+        const adminRows = document.querySelectorAll('#adminTable tbody tr');
+
+        superuserRows.forEach(row => {
+            const username = row.cells[0].innerText.toLowerCase();
+            row.style.display = username.includes(query) ? '' : 'none';
+        });
+
+        adminRows.forEach(row => {
+            const username = row.cells[0].innerText.toLowerCase();
+            row.style.display = username.includes(query) ? '' : 'none';
+        });
+    }
+</script>
+
+</body>
+</html>

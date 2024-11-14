@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Internal CSS for styling */
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .search-recipient {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .suggestions {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .suggestions div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions div:hover {
+            background-color: #f0f0f0;
+        }
+
+        .message-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-box textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .send-btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2><i class="fas fa-envelope"></i> Send a Message</h2>
+
+    <!-- Search Recipient -->
+    <div class="search-recipient">
+        <input type="text" id="search-bar" class="search-bar" placeholder="Search for a user..." autocomplete="off">
+        <div class="suggestions" id="suggestions"></div>
+    </div>
+
+    <!-- Message Box -->
+    <div class="message-box">
+        <label for="message-content">Message:</label>
+        <textarea id="message-content" placeholder="Type your message here..."></textarea>
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var selectedUserId = null;
+
+    // AJAX call to fetch users as the user types
+    $('#search-bar').on('input', function () {
+        let query = $(this).val();
+        if (query.length > 0) {
+            $.ajax({
+                url: '{% url "search_user" %}',
+                type: 'GET',
+                data: {'query': query},
+                success: function (data) {
+                    let suggestions = $('#suggestions');
+                    suggestions.empty();
+                    data.users.forEach(user => {
+                        suggestions.append(`<div onclick="selectUser(${user.id}, '${user.username}')">${user.username}</div>`);
+                    });
+                    suggestions.show();
+                }
+            });
+        } else {
+            $('#suggestions').empty().hide();
+        }
+    });
+
+    // Select a user from the suggestions
+    function selectUser(id, username) {
+        $('#search-bar').val(username);
+        selectedUserId = id;
+        $('#suggestions').hide();
+    }
+
+    // AJAX function to send the message
+    function sendMessage() {
+        let content = $('#message-content').val();
+        if (content.trim() && selectedUserId) {
+            $.ajax({
+                url: '{% url "send_message" %}',
+                type: 'POST',
+                data: {
+                    'recipient': selectedUserId,
+                    'content': content,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert('Message sent successfully!');
+                    $('#message-content').val(''); // Clear the message box
+                    $('#search-bar').val(''); // Clear recipient
+                    selectedUserId = null; // Reset selected user
+                },
+                error: function(error) {
+                    console.error('Error sending message:', error);
+                }
+            });
+        } else {
+            alert('Please enter a message and select a recipient.');
+        }
+    }
+</script>
+
+</body>
+</html>

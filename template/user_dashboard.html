@@ -1,0 +1,420 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Profile Page</title>
+    <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(0);
+            transition: transform 0.3s ease-in-out;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+        }
+       
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s;
+        }
+a{
+    text-decoration: none;
+    color: black;
+}
+        .sidebar ul li a:hover {
+            color: #ffc107;
+        }
+
+        .dropdown-content {
+            display: none;
+            padding-left: 15px;
+        }
+
+        .dropdown-content a {
+            font-size: 0.9em;
+            color: #dcdcdc;
+        }
+
+        .dropdown-content a:hover {
+            color: #ffc107;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* Profile Content */
+        .profile-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            /* Sidebar adjustments */
+            .sidebar {
+                width: 250px;
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                height: 100%;
+                z-index: 10;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* Sidebar toggle button visible on mobile */
+            .sidebar-toggle {
+                display: block;
+            }
+
+            /* Content adjustments for mobile */
+            .profile-content {
+                margin-left: 0;
+                padding-top: 50px;
+            }
+        }
+
+
+
+        .profile-section {
+    text-align: left;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.profile-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #fff; /* White border around the profile image */
+}
+
+.active-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+    background-color: #28a745; /* Green color for active status */
+    border-radius: 50%;
+    border: 2px solid #fff; /* Border to give separation from the profile image */
+}
+
+.username {
+    color: #ffc107;
+    font-size: 1.2em;
+    margin-top: 5px;
+    text-align: left;
+    align-items: center;
+}
+
+
+        .cover-image {
+          
+            background-position: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.default_profile{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+
+        .profile-header img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            border: 3px solid #fff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .user-status {
+            background-color: #28a745;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .btn-edit-profile {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-edit-profile:hover {
+            background-color: #e0a800;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .logout {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+        }
+
+        .logout a {
+            color: #ff4d4d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout a:hover {
+            color: #ff6666;
+        }
+        .user-status {
+    background-color: #17a2b8; /* Default color for Registered Voter */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+
+
+.remove-button {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background-color: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .remove-button:hover {
+        background-color: #ff3333;
+    }
+    .cover-image {
+            width: 100%;
+            height: 300px;
+            background-color: #ccc;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+          
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+<!-- Sidebar Navigation with Dropdowns -->
+<div class="sidebar" id="sidebar">
+        
+    <div>
+
+        <div class="profile-section">
+            <div class="profile-image-container">
+                <a href="{% url 'update_profile_image_page' %}">
+                    {% if request.user.profile_image %}
+                        <img src="{{ request.user.profile_image.url }}" alt="Profile Image" class="profile-image">
+                    {% else %}
+                        <img src="{% static 'image/default_profile.png' %}" alt="Default Profile Image" class="default_profile">
+                    {% endif %}
+                    <span class="active-indicator"></span>
+                </a>
+            </div>
+            <h3 class="username">{{ request.user.username }}</h3>
+    
+            <!-- Form for removing the profile image -->
+            {% if request.user.profile_image %}
+                <form method="POST" action="{% url 'remove_profile_image' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="remove-button">Remove Profile Image</button>
+                </form>
+            {% endif %}
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                
+            </li>
+            <li>
+                <a onclick="toggleDropdown('personalInfoDropdown')"><i class="fas fa-user"></i> Personal Info</a>
+                <ul class="dropdown-content" id="personalInfoDropdown">
+                    <li><a href="{% url 'user_profile' %}">Personal Details</a></li>
+            
+                </ul>
+            </li>
+            <li>
+                <a onclick="toggleDropdown('settingsDropdown')"><i class="fas fa-cog"></i> Account Settings</a>
+                <ul class="dropdown-content" id="settingsDropdown">
+                    <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                </ul>
+            </li>
+            <li>
+                <a onclick="toggleDropdown('votingHistoryDropdown')"><i class="fas fa-history"></i> Voting History</a>
+                <ul class="dropdown-content" id="votingHistoryDropdown">
+                  <li><a href="{% url 'past_elections' %}">Past Elections</a></li>
+<li><a href="{% url 'current_votes' %}">Current Votes</a></li>
+
+                </ul>
+            </li>
+            <li>
+                <a onclick="toggleDropdown('feedbackDropdown')"><i class="fas fa-comment-alt"></i> Feedback</a>
+                <ul class="dropdown-content" id="feedbackDropdown">
+                    <li><a href="{% url 'user_feedback_page' %}">Feedback</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- Logout Section -->
+    <div class="logout">
+        <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</div>
+ <!-- Main Profile Content -->
+ <div class="profile-content">
+    <a href="{% url 'update_cover_image' %}">
+       <div class="cover-image" style="background-image: url('{% if profile.cover_image %}{{ profile.cover_image.url }}{% else %}/static/images/default_cover.png{% endif %}');">
+       </div>
+    </a>
+    <div class="profile-header">
+        <a href="{% url 'update_profile_image_page' %}">
+            {% if request.user.profile_image %}
+                <img src="{{ request.user.profile_image.url }}" alt="Profile Image" class="profile-image">
+            {% else %}
+                <img src="{% static 'image/default_profile.png' %}" alt="Default Profile Image" class="default_profile">
+            {% endif %}
+        </a>
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+           
+            <a href="{% url 'edit_profile_page' %}">
+                <button class="btn-edit-profile">Edit Profile</button>
+            </a>
+            <p class="user-status">
+                {% if is_candidate %}
+                    Candidate
+                {% elif is_voter %}
+                    Registered Voter
+                {% else %}
+                    Regular User
+                {% endif %}
+            </p>  
+        
+        
+
+    </div>
+
+    <!-- Personal Info Section -->
+    <section id="personal-info">
+        <p><strong>Email:</strong> {{ request.user.email }} <i class="fas fa-check-circle verified-icon"></i></p>
+    </section>
+</div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
+
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>

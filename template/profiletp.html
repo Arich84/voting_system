@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - V_FPOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <input type="checkbox" id="theme-toggle" class="theme-switch">
+        <label for="theme-toggle" class="theme-toggle-label">
+            <span class="sun-icon">🌞</span>
+            <span class="moon-icon">🌙</span>
+        </label>
+    </div>
+
+    <!-- Profile Container -->
+    <div class="main-container">
+        <header>
+            <h1>Your Profile</h1>
+        </header>
+        
+        <!-- Profile Details Section -->
+        <section class="profile-details">
+            <h2>Personal Information</h2>
+            <h1>{{ user.username }}'s Profile</h1>
+            <h2>Personal Details</h2>
+            <p>Email: {{ comparison_data.email }}</p>
+            <p>Matriculation Number: {{ comparison_data.matriculation_number }}</p>
+           
+            <h3>Account Actions</h3>
+            <div class="profile-actions">
+                <a href="{% url 'update_profile' %}" class="button">Edit Profile</a>
+                <a href="{% url 'logout' %}" class="button">Logout</a>
+            </div>
+        </section>
+
+        <!-- Voting History Section (Optional) -->
+        <section class="voting-history">
+            <h2>Your Voting History</h2>
+            {% if voting_history %}
+                <ul>
+                    {% for vote in voting_history %}
+                        <li>Voted for {{ vote.candidate_name }} on {{ vote.date|date:"F j, Y" }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No voting history available.</p>
+            {% endif %}
+        </section>
+
+        <!-- User Feedback Section -->
+        <section class="user-feedback">
+            <h2>Submit Your Feedback</h2>
+            <form method="post" action="{% url 'submit_feedback' %}">
+                {% csrf_token %}
+                <label for="message">Feedback:</label>
+                <textarea name="message" required></textarea>
+
+                <label for="rating">Rating:</label>
+                <select name="rating" required>
+                    <option value="">Select...</option>
+                    <option value="1">Bad</option>
+                    <option value="2">Average</option>
+                    <option value="3">Good</option>
+                </select>
+
+                <button type="submit" class="button">Submit Feedback</button>
+            </form>
+<!-- Feedback Section -->
+<section class="feedback-section">
+    <h2>Your Feedback</h2>
+    {% if feedback_list %}
+        <ul>
+            {% for feedback in feedback_list %}
+                <li>
+                    <p><strong>Message:</strong> {{ feedback.message }}</p>
+                    <p><strong>Rating:</strong> {{ feedback.rating }}</p>
+                    {% if feedback.response %}
+                        <p><strong>Admin Reply:</strong> {{ feedback.response }}</p>
+                        <p><a href="{% url 'reply_to_admin' feedback.id %}">Reply to Admin</a></p>
+                    {% else %}
+                        <p><strong>Admin Reply:</strong> <em>No reply yet.</em></p>
+                    {% endif %}
+                    <p><em>Submitted on: {{ feedback.created_at|date:"F j, Y" }}</em></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No feedback submitted yet.</p>
+    {% endif %}
+</section>
+
+
+        
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 V_FPOG. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+
+<h2>Feedback List</h2>
+<ul>
+    {% for feedback in feedbacks %}
+        <li>
+            <a href="{% url 'feedback_chat' feedback.id %}">
+                Feedback to {{ feedback.get_recipient_type_display }} - {{ feedback.message|truncatewords:10 }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

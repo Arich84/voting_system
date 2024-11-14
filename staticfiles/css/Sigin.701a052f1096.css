@@ -1,0 +1,188 @@
+/* uniserval selector */
+* {
+    margin: 0;
+    padding: 0;
+   /* border: 1px solid red; */
+}
+
+/* uniserval selector end*/
+
+/* Body and header start */
+
+body {
+    background-color: rgb(228, 116, 71);
+}
+
+header {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(240, 158, 125);
+    color:white;
+    padding: 10px 0px 5px 0px;
+    align-items: center;
+}
+
+.school_logo img {
+    width: 90px;
+    border-radius: 30px;
+}
+
+.site_name {
+    font-size: 30px;
+    outline: 2px solid rgb(211, 99, 99);
+    border-radius: 5px;
+}
+
+/* Body and header end */
+
+/* form start */
+
+form {
+    margin: auto;
+    margin-top: 10px;
+    width: 30%;
+    padding: 30px;
+    box-shadow: 3px 5px 15px rgba(0,0,0,.5);
+    border-radius: 5px;
+}
+
+.form_name{
+    text-align: center;
+    color: white;
+}
+
+form a{
+    text-decoration: none;
+    color:white;
+}
+
+
+form button {
+    margin: auto;
+    padding: 4px 40px 4px 40px;
+    font-size: 17px;
+    font-weight: 20px;
+    border: none;
+    border-radius: 20px;
+    display: block;
+   
+}
+
+label{
+    color: white;
+    font-size: 16px;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.inla{
+    margin-top: 10px;
+}
+
+.inla input {
+    display: inline-flex;
+    padding-left: 18px;
+    padding-right:23px ;
+    padding-top:1px ;
+    padding-bottom:1px ;
+    border: none;
+    display: block;
+    height: 30px;
+    width: 350px;
+    border-bottom: 1px solid rgb(97, 76, 63);
+  
+
+}
+
+
+input::placeholder {
+    text-align: left;
+
+}
+
+input:hover {
+    outline: 1px solid rgb(97, 76, 63);
+    border-radius: 1px;
+}
+
+input:focus{
+    transition: 1ms;
+    outline: none;
+    border-bottom: 2px solid rgb(97, 76, 63);
+}
+
+
+.have_account {
+    text-decoration: none;
+    color: black;
+    font-weight: 20px;
+    font-size: 20px;
+    margin-top: 25px;
+}
+
+
+.checkbox {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: left;
+}
+
+.checkbox  input{
+   margin-bottom:21px;
+   margin-left: 10px;
+}
+
+.signup {
+    margin-top: 20px;
+   
+}
+.signup button{
+  cursor:pointer;
+
+}
+
+.signup button:hover {
+    outline: 2px solid rgb(97, 76, 63);
+    transition: all 1ms linear;
+}
+
+.signup p {
+    margin-bottom: 10px;
+    margin-top: 10px;
+   text-align: center;
+}
+
+
+.option{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: none;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.option select{
+    border: none;
+    outline: 1px solid rgb(97, 76, 63);
+    padding: 3px 2px 3px 2px;
+}
+
+.option select:focus{
+    border: none;
+    outline: 2px solid rgb(97, 76, 63);
+}
+
+.option select:hover{
+    border: none;
+    outline: 2px solid rgb(97, 76, 63)
+}
+
+
+.year select{
+    margin-right: 5px;
+    margin-left: 5px;
+}

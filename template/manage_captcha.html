@@ -1,0 +1,29 @@
+{% load custom_filters %}
+
+
+<h2>Manage CAPTCHA Settings</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label for="captcha_enabled">Enable CAPTCHA:</label>
+    <input type="checkbox" name="captcha_enabled" id="captcha_enabled" {% if captcha_enabled %}checked{% endif %}>
+
+    <label for="captcha_length">Length:</label>
+    <input type="number" name="captcha_length" id="captcha_length" value="{{ captcha_length }}">
+
+    <label for="captcha_width">Width:</label>
+    <input type="number" name="captcha_width" id="captcha_width" value="{{ captcha_width }}">
+
+    <label for="captcha_height">Height:</label>
+    <input type="number" name="captcha_height" id="captcha_height" value="{{ captcha_height }}">
+
+    <label for="font_size">Font Size:</label>
+    <input type="number" name="font_size" id="font_size" value="{{ font_size }}">
+
+    <label for="background_color">Background Color (RGB):</label>
+    <input type="text" name="background_color" id="background_color" value="{{ background_color }}">
+
+    <button type="submit">Update Settings</button>
+</form>
+
+
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .chart {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        td {
+            background-color: #fafafa;
+        }
+        td img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .candidate-image {
+        width: 50px;   /* Set the desired width */
+        height: 30px;  /* Set the desired height */
+        object-fit: cover;  /* Ensures the image maintains its aspect ratio */
+        border-radius: 50%;  /* Keeps the image in a circular shape */
+        border: 2px solid #ddd;  /* Optional: Adds a border around the image */
+        }
+        td span {
+            font-style: italic;
+            color: #777;
+        }
+        @media (max-width: 768px) {
+            td img {
+                width: 40px;
+                height: 40px;
+            }
+            .results-table th, .results-table td {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Election Results</h1>
+
+        <!-- Chart Section -->
+        <div class="chart">
+            <img src="data:image/png;base64,{{ chart_url }}" alt="Election Results Chart" style="max-width: 100%; height: auto;">
+        </div>
+
+        <!-- Results Table -->
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Image</th>
+                    <th>Position</th>
+                    <th>Total Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position, candidates in position_votes.items %}
+                    {% for candidate_name, votes, image_url in candidates %}
+                    <tr>
+                        <td>{{ candidate_name }}</td>
+                        <td>
+                            {% if image_url %}
+                                <img src="{{ image_url }}" alt="Candidate Image"  class="candidate-image">
+                            {% else %}
+                                <span>No Image</span>
+                            {% endif %}
+                        </td>
+                        {% if forloop.first %}
+                            <td rowspan="{{ candidates|length }}">{{ position }}</td>
+                        {% endif %}
+                        <td>{{ votes }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

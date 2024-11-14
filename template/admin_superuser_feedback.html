@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Feedback Directed to Superuser</h2>
+<div class="feedback-list">
+    {% for feedback in feedbacks %}
+        <div class="feedback-item">
+            <h3>{{ feedback.user.username }} - {{ feedback.created_at|date:"F j, Y, g:i a" }}</h3>
+            <p>{{ feedback.message }}</p>
+            <p>Priority: {{ feedback.get_priority_display }}</p>
+            {% if feedback.is_resolved %}
+                <p><strong>Status:</strong> Resolved</p>
+            {% else %}
+                <p><strong>Status:</strong> Unresolved</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No feedback directed to Superuser at the moment.</p>
+    {% endfor %}
+</div>
+{% endblock %}

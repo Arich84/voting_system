@@ -1,0 +1,7 @@
+<!-- admin_results.html -->
+<h1>Voting Results</h1>
+{% for result in results %}
+    <div>
+        <p>{{ result.candidate__user__username }} ({{ result.candidate__position__name }}) - {{ result.total_votes }} votes</p>
+    </div>
+{% endfor %}

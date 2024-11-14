@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Votes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        li .user {
+            font-weight: bold;
+            color: #333;
+        }
+        li .candidate {
+            color: #007bff;
+        }
+        li .position {
+            font-weight: bold;
+            color: #555;
+        }
+        li .total-votes {
+            color: #28a745;
+            font-style: italic;
+        }
+        li .date {
+            float: right;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Current Votes</h2>
+        <ul>
+            {% for vote in votes %}
+                <li>
+                    <span class="user">{{ vote.user.get_full_name }}</span> voted for 
+                    <span class="candidate">{{ vote.candidate.user.get_full_name }}</span> 
+                    <span class="position">({{ vote.candidate.position.name }})</span>
+                    <span class="total-votes">Total Votes: {{ vote.candidate.total_votes }}</span>
+                    <span class="date">{{ vote.voted_at }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

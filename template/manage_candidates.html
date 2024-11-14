@@ -1,0 +1,6 @@
+<h1>Manage Approved Candidates</h1>
+<ul>
+    {% for candidate in candidates %}
+        <li>{{ candidate.username }} - Position: {{ candidate.candidate_application.position }}</li>
+    {% endfor %}
+</ul>

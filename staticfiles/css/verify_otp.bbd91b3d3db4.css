@@ -1,0 +1,130 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #f0f4c3, #81d4fa);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Container */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Form Styles */
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ff3b3f;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+/* Input Styles */
+input[type="text"] {
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #f0f4c3;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+    font-size: 16px;
+}
+
+input:hover {
+    transform: translateY(-2px);
+    background: #dce775;
+}
+
+input:focus {
+    background: #e1f5fe;
+    box-shadow: 0 0 8px rgba(255, 59, 63, 0.6);
+    outline: none;
+}
+
+/* Button Styles */
+.verify-btn {
+    background: linear-gradient(90deg, #ff3b3f, #ff6f61);
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 12px;
+}
+
+.verify-btn:hover {
+    background: linear-gradient(90deg, #ff6f61, #ff3b3f);
+    transform: translateY(-2px);
+}
+
+/* Resend OTP Link */
+.resend-link {
+    color: #ff3b3f;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 500px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    .verify-btn {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+@media (min-width: 1200px) {
+    body {
+        padding: 30px;
+    }
+
+    .container {
+        max-width: 450px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+}

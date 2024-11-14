@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register_Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #f0f4c3, #81d4fa);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        /* Container */
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            text-align: left;
+            margin: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Form Styles */
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin-bottom: 18px;
+            color: #ff3b3f;
+            font-weight: 600;
+            font-size: 22px;
+        }
+
+        /* Input Styles */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            padding: 10px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 6px;
+            background: #f0f4c3;
+            transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+            font-size: 14px;
+            width: 96%;
+        }
+
+        input:hover {
+            transform: translateY(-2px);
+            background: #dce775;
+        }
+
+        input:focus {
+            background: #e1f5fe;
+            box-shadow: 0 0 5px rgba(255, 59, 63, 0.6);
+            outline: none;
+        }
+
+        /* CAPTCHA container */
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .captcha-container img {
+            width: 100%;
+            max-width: 180px;
+            border-radius: 6px;
+            flex: 1 1 auto;
+        }
+
+        .captcha-container input {
+            flex: 1 1 auto;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #f0f4c3;
+            font-size: 14px;
+            min-width: 100px;
+        }
+
+        /* Button Styles */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            background: linear-gradient(90deg, #ff3b3f, #ff6f61);
+            border: none;
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #ff6f61, #ff3b3f);
+            transform: translateY(-2px);
+        }
+
+        /* Error Message */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+                max-height: 80vh;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            input {
+                font-size: 12px;
+            }
+
+            .captcha-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .captcha-container img,
+            .captcha-container input {
+                width: 100%;
+            }
+
+            button {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+        }
+    </style>
+
+    <script>
+        function goBack() {
+            const userType = "{{ user_type }}";
+            if (userType === "superuser") {
+                window.location.href = "{% url 'superuser_dashboard' %}";
+            } else if (userType === "admin") {
+                window.location.href = "{% url 'admin_dashboard' %}";
+            } else {
+                alert("User not recognized.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2> <center>Create Your Account</center> </h2>
+        <form method="post">
+            {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+            
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" required>
+            
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+           
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" required>
+            
+            
+            <div class="captcha-container">
+                <img src="{{ captcha_image }}" alt="CAPTCHA" />
+                <input type="text" name="captcha_response" required placeholder="Enter CAPTCHA">
+            </div>
+            
+            <div class="button-container">
+                <button type="submit">Register as Admin</button>        
+                <button type="button" onclick="goBack()">Back to Dashboard</button>
+            </div>
+            
+           
+        </form>        
+    </div>
+</body>
+</html>

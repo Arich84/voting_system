@@ -1,0 +1,26 @@
+{% load captcha %}
+<html>
+<head>
+    <title>My Form</title>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Automatically renders fields -->
+        {% if form.errors %}
+            <div class="error">
+                <strong>Please correct the following errors:</strong>
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

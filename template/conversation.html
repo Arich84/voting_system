@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with {{ other_user.username }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; }
+        .chat-container { max-width: 600px; margin: 50px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .messages { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+        .message { padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .message.sent { background: #e1ffc7; text-align: right; }
+        .message.received { background: #f1f0f0; text-align: left; }
+        .input-container { display: flex; }
+        .input-container input[type="text"] { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .input-container button { padding: 10px 15px; margin-left: 5px; background: #007bff; color: white; border: none; border-radius: 5px; }
+        #notificationBadge { background: red; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; position: absolute; top: 10px; right: 20px; }
+    </style>
+    <script src="{% static 'js/chat.js' %}"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="notificationBadge"></div>
+        <h2>Chat with {{ other_user.username }}</h2>
+        <div id="messagesContainer" class="messages">
+            {% for message in messages %}
+                <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                    {{ message.content }}
+                    <span style="font-size: 0.8em; color: gray;">{{ message.timestamp }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <form id="messageForm" class="input-container">
+            <input type="hidden" id="recipientId" value="{{ other_user.id }}">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    document.addEventListener("DOMContentLoaded", () => {
+        const messageForm = document.getElementById("messageForm");
+        const messageInput = document.getElementById("messageInput");
+        const messagesContainer = document.getElementById("messagesContainer");
+        const notificationBadge = document.getElementById("notificationBadge");
+    
+        function fetchMessages() {
+            fetch(`/get_unread_notifications/`)
+                .then(response => response.json())
+                .then(data => {
+                    notificationBadge.innerText = data.unread_notifications;
+                });
+        }
+    
+        messageForm.onsubmit = function (event) {
+            event.preventDefault();
+            const recipientId = document.getElementById("recipientId").value;
+            const content = messageInput.value;
+    
+            fetch("/send_message/", {
+                method: "POST",
+                headers: { "X-CSRFToken": csrftoken },
+                body: new URLSearchParams({ recipient_id: recipientId, content: content })
+            }).then(() => {
+                messageInput.value = "";
+                fetchMessages();
+            });
+        };
+    
+        setInterval(fetchMessages, 5000);
+    });
+    
+</body>
+</html>

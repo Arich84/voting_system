@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Replies</title>
+    <style>
+        /* Internal CSS for styling */
+        .feedback-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .feedback-header {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+        .message-container {
+            margin-top: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #007bff;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .reply-container {
+            margin-left: 20px;
+            border-left: 2px dashed #007bff;
+            padding: 8px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .timestamp {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>All Feedback and Replies</h1>
+
+{% if feedbacks %}
+    {% for feedback in feedbacks %}
+        <div class="feedback-container">
+            <p class="feedback-header">Feedback from {{ feedback.user.get_full_name }} ({{ feedback.user.user_type|capfirst }})</p>
+            <p>{{ feedback.message }}</p>
+            <p class="timestamp">Priority: {{ feedback.priority|capfirst }} | Created: {{ feedback.created_at }}</p>
+
+            <h4>Messages:</h4>
+            {% for message in feedback.messages.all %}
+                <div class="message-container">
+                    <strong>{{ message.sender.get_full_name }}:</strong>
+                    <p>{{ message.message }}</p>
+                    <p class="timestamp">Sent on: {{ message.created_at }}</p>
+                    {% if message.image %}
+                        <p><img src="{{ message.image.url }}" alt="Image" style="max-width: 200px; max-height: 200px;"></p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No messages for this feedback.</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No feedback or replies available.</p>
+{% endif %}
+
+</body>
+</html>

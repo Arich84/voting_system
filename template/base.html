@@ -1,0 +1,599 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}V_FPOG{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% block extra_head %}
+    <!-- Additional styles or scripts can be added by child templates -->
+    {% endblock %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   
+    
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 220px;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        /* Sidebar content */
+        .sidebar .logo h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            width: 100%;
+        }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle-btn {
+            display: none;
+            background-color: #333;
+            color: #fff;
+            font-size: 1.5em;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-left: 240px;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease;
+        }
+
+                /* Footer Styling */
+                footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Contact Info Section */
+        .footer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            flex-wrap: wrap; /* Allows wrapping on small screens */
+        }
+
+        .footer-contact a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .footer-contact a:hover {
+            color: #f0a500; /* Optional hover color */
+        }
+
+        /* Icon Styling */
+        .footer-contact i {
+            font-size: 1.2em;
+        }
+
+        /* Social Media Links */
+        /* .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap; /* Allows wrapping on small screens */
+        } */
+
+         /* Slider Section Styling */
+         .slider-section {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            position: relative;
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            object-fit: cover; /* Ensures images cover the container without distortion */
+        }
+
+        .slide-text {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for text */
+            padding: 10px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .slide-text h3 {
+                font-size: 1.5em;
+            }
+
+            .slide-text p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide-text {
+                padding: 8px;
+                width: 100%;
+                font-size: 0.9em;
+            }
+
+            .slide-text h3 {
+                font-size: 1.2em;
+            }
+
+            .slide-text p {
+                font-size: 0.9em;
+            }
+        }
+         /* Announcements Section */
+.announcements-section {
+    text-align: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+
+}
+
+.announcements-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.announcements-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.announcement-item {
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.announcement-item h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.announcement-item p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.announcement-item small {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .announcement-item {
+        width: 90%;
+    }
+
+    .announcements-section h2 {
+        font-size: 1.75rem;
+    }
+
+    .announcement-item h3 {
+        font-size: 1.3rem;
+    }
+
+    .announcement-item p {
+        font-size: 0.95rem;
+    }
+}
+
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .footer-contact,
+            .footer-social {
+                flex-direction: column; /* Stacks items vertically */
+                align-items: center;
+            }
+        }
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%); /* Hide sidebar by default on small screens */
+            }
+
+            /* Show toggle button and sidebar when not hidden on smaller screens */
+            .sidebar-toggle-btn {
+                display: block;
+            }
+
+            .sidebar:not(.hidden) {
+                transform: translateX(0); /* Show sidebar when .hidden is not active */
+            }
+
+            .main-container {
+                margin-left: 0;
+            }
+        }
+
+        
+.notif-container {
+            position: relative;
+            display: inline-block;
+           
+        }
+
+        .notif-icon {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>V_FPOG</h1>
+        </div>
+         <!-- Navigation Menu -->
+         <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                {% if user.user_type == 'superuser' %}
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                    
+                    <li>
+                        <div class="notif-container">
+                            <a href="{% url 'messages_overview' %}" class="message-link">
+                                <i class="fas fa-comments icon"></i> Messages 
+                            <span id="notif-icon" class="notif-icon">{{ unread_messages }}</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li><a href="{% url 'notifications' %}">
+                        <i class="fas fa-bell"></i> Notifications
+                        <span id="notif-icon" class="notif-count" style="display: none;"></span> <!-- Badge to show unread count -->
+                    </a></li>
+                    <li><a href="{% url 'superuser_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                {% elif user.user_type == 'admin' %}
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                    <li>
+                        <div class="notif-container">
+                            <a href="{% url 'messages_overview' %}" class="message-link">
+                                <i class="fas fa-comments icon"></i> Messages 
+                            <span id="notif-icon" class="notif-icon">{{ unread_messages }}</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li><a href="{% url 'notifications' %}">
+                        <i class="fas fa-bell"></i> Notifications
+                        <span id="notif-icon" class="notif-count" style="display: none;"></span> <!-- Badge to show unread count -->
+                    </a></li>
+                    <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                {% elif user.user_type == 'user' %}
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="{% url 'rules' %}"><i class="fas fa-gavel"></i> Rules</a></li>
+                    <li><a href="{% url 'apply_to_be_candidate' %}"><i class="fas fa-user-plus"></i> Apply</a></li>
+                    <li><a href="{% url 'candidates' %}"><i class="fas fa-users"></i> Candidates</a></li>
+                    <li><a href="{% url 'vote_page' %}"><i class="fas fa-vote-yea"></i> Vote</a></li>
+                    <li>
+                        <div class="notif-container">
+                            <a href="{% url 'messages_overview' %}" class="message-link">
+                                <i class="fas fa-comments icon"></i> Messages 
+                            <span id="notif-icon" class="notif-icon">{{ unread_messages }}</span>
+                            </a>
+                        </div>
+                    </li>
+
+                    <li><a href="{% url 'notifications' %}">
+                        <i class="fas fa-bell"></i> Notifications
+                        <span id="notif-icon" class="notif-count" style="display: none;"></span> <!-- Badge to show unread count -->
+                    </a></li>
+                    
+                    <li><a href="{% url 'user_dashboard' %}"><i class="fas fa-user"></i> Profile</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="{% url 'rules' %}"><i class="fas fa-gavel"></i> Rules</a></li>
+                <li><a href="{% url 'candidates' %}"><i class="fas fa-users"></i> Candidates</a></li>
+            {% endif %}
+            
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+        <div class="theme-toggle">
+            <input type="checkbox" id="theme-toggle" class="theme-switch">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <span class="sun-icon">🌞</span>
+                <span class="moon-icon">🌙</span>
+            </label>
+        </div>
+    
+        
+    
+     
+            {% block content %}
+            <!-- Child templates will insert their content here -->
+            {% endblock %}
+       
+    
+
+
+
+      
+
+
+        
+    </div>
+    </div>
+    <script src="{% static 'js/theme.js' %}"></script>
+  
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+
+    
+    <!-- results.html -->
+<script>
+    setInterval(() => {
+        location.reload();
+    }, 10000);  // Reload every 10 seconds
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script>
+     document.addEventListener('DOMContentLoaded', function () {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function updateSlidePosition() {
+        const sliderContainer = document.querySelector('.slider-container');
+        const offset = -currentSlide * 100; // Offset for sliding
+        sliderContainer.style.transform = `translateX(${offset}%)`;
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides; // Move to the next slide
+        updateSlidePosition();
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; // Move to the previous slide
+        updateSlidePosition();
+    }
+
+    // Auto-slide functionality
+    setInterval(nextSlide, 5000); // Change slide every 5 seconds
+
+    // Add event listeners for buttons
+    document.querySelector('.next').addEventListener('click', nextSlide);
+    document.querySelector('.prev').addEventListener('click', prevSlide);
+});
+
+
+             
+// Fetch live voting results every 5 seconds
+setInterval(function () {
+    fetch('/get_live_results/')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(candidate => {
+                // Use `voter_name` (full name) to find the HTML element and update its vote count
+                const votesElement = document.getElementById(`votes-${candidate.voter_name}`);
+                if (votesElement) {
+                    // Update the vote count text
+                    votesElement.textContent = `${candidate.votes_count} votes (${candidate.position})`;
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching live results:', error));
+}, 5000);  // Update every 5 seconds
+
+
+
+        
+    </script>
+
+<script>
+    // Function to handle countdown
+    function startCountdown(timeRemaining, elementId) {
+        let seconds = timeRemaining;
+
+        function updateCountdown() {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            const secs = Math.floor(seconds % 60);
+
+            const element = document.getElementById(elementId);
+            element.textContent = `${days}d ${hours}h ${minutes}m ${secs}s`;
+
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                clearInterval(timerInterval);
+            }
+        }
+
+        updateCountdown();
+        const timerInterval = setInterval(updateCountdown, 1000);
+    }
+
+    // Registration countdown
+    const registrationRemaining = parseInt("{{ registration_remaining|default:0 }}", 10);
+    if (registrationRemaining > 0) {
+        startCountdown(registrationRemaining, 'registration-timer');
+    }
+
+    // Preparation countdown
+    const preparationRemaining = parseInt("{{ preparation_remaining|default:0 }}", 10);
+    if (preparationRemaining > 0) {
+        startCountdown(preparationRemaining, 'preparation-timer');
+    }
+</script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+    
+    <script>
+        // Check for new notifications every 5 seconds
+        function checkNotifications() {
+            $.ajax({
+                url: '{% url "check_notifications" %}',  // URL to check notifications
+                method: 'GET',
+                success: function(response) {
+                    const unreadCount = response.unread_notifications;
+        
+                    // If unread notifications exist, show the count
+                    if (unreadCount > 0) {
+                        $('#notif-icon').text(unreadCount).show();
+                    } else {
+                        $('#notif-icon').hide();
+                    }
+                },
+                error: function(error) {
+                    console.error('Error checking notifications:', error);
+                }
+            });
+        }
+        
+        // Poll for notifications every 5 seconds
+        setInterval(checkNotifications, 5000);
+        
+        // Call it immediately when the page loads to get the current state
+        checkNotifications();
+    
+        // Mark notifications as read when the user clicks on the notification icon
+        $('#notif-icon').click(function() {
+            $.ajax({
+                url: '{% url "mark_notifications_as_read" %}',  // URL to mark notifications as read
+                method: 'POST',
+                success: function(response) {
+                    console.log('Notifications marked as read');
+                    $('#notif-icon').hide();  // Hide the notification icon after marking as read
+                },
+                error: function(error) {
+                    console.error('Error marking notifications as read:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

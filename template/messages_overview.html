@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages Overview</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .conversation {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .conversation a {
+            font-weight: bold;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .conversation a:hover {
+            text-decoration: underline;
+        }
+
+        .search-section {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .search-section input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        .search-section button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-section button:hover {
+            background-color: #0056b3;
+        }
+
+        .user-list {
+            margin-top: 15px;
+        }
+
+        .user-item {
+            padding: 10px;
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .search-section input[type="text"] {
+                width: calc(100% - 100px);
+            }
+
+            .search-section button {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Messages Overview</h1>
+
+    <!-- Search for users to message -->
+    <div class="search-section">
+        <input type="text" id="searchInput" class="input-field" placeholder="Search for users to message...">
+        <button onclick="searchUsers()" class="search-btn">Search</button>
+    </div>
+
+    <div class="user-list" id="userList"></div>
+
+    <!-- Display previous messages -->
+    <div>
+        <h2>Previous Conversations</h2>
+        {% for message in conversations %}
+            <div class="conversation">
+                {% if message.sender == request.user %}
+                    <a href="{% url 'send_and_view_messages' message.recipient.id %}">
+                        Chat with {{ message.recipient.username }}
+                    </a>
+                {% else %}
+                    <a href="{% url 'send_and_view_messages' message.sender.id %}">
+                        Chat with {{ message.sender.username }}
+                    </a>
+                {% endif %}
+                <p>Last message: {{ message.content }}</p>
+                <p><small>{{ message.timestamp }}</small></p>
+            </div>
+        {% empty %}
+            <p>No previous conversations.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+// Function to search for users
+function searchUsers() {
+    const query = document.getElementById('searchInput').value;
+    if (query.trim() === '') return;  // Prevent searching with an empty query
+
+    fetch(`/search-users/?query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';  // Clear previous search results
+            if (data.users.length > 0) {
+                data.users.forEach(user => {
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'user-item';
+                    userDiv.textContent = user.username;
+                    userDiv.onclick = () => {
+                        window.location.href = `/messages/${user.id}/`;
+                    };
+                    userList.appendChild(userDiv);
+                });
+            } else {
+                userList.innerHTML = '<p>No users found.</p>';
+            }
+        });
+}
+</script>
+
+</body>
+</html>

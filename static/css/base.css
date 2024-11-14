@@ -1,0 +1,21 @@
+.about-section, .rules-section, .candidates-section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.candidate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.candidate img {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+.candidate h3 {
+    margin: 10px 0;
+}

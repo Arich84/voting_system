@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(to right, #4a90e2, #007aff);
+    color: white;
+    border-radius: 8px;
+}
+
+.profile-card, .candidates-preview, .dashboard-nav {
+    margin: 20px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2, .candidates-preview h2 {
+    margin-top: 0;
+}
+
+.dashboard-nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.dashboard-nav a {
+    text-decoration: none;
+    color: #007aff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.dashboard-nav a:hover {
+    color: #005bb5;
+}
+
+.candidates-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.candidate-card {
+    flex: 1 1 30%;
+    padding: 15px;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.candidate-card h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    background: #007aff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: #005bb5;
+}
+
+
+.notification-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content .notification-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.notification-item.unread {
+    background-color: #f1f1f1; /* Highlight unread notifications */
+}
+
+.notification-count {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 0 5px;
+    margin-left: 5px;
+}

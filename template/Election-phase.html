@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Phase</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #444;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input[type="datetime-local"] {
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+        .update-button:hover {
+            background-color: #45a049;
+        }
+        .recent-activity {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .recent-activity h3 {
+            color: #444;
+            font-size: 16px;
+        }
+        .recent-activity ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .recent-activity li {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Election Phase</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Registration Window -->
+            <h3>Registration Window</h3>
+            <label for="registration_start">Start Time:</label>
+            <input type="datetime-local" id="registration_start" name="registration_start"
+                   value="{{ registration_window.start_time|date:'Y-m-d\TH:i' }}" required>
+            <label for="registration_end">End Time:</label>
+            <input type="datetime-local" id="registration_end" name="registration_end"
+                   value="{{ registration_window.end_time|date:'Y-m-d\TH:i' }}" required>
+            <div class="button-group">
+                <button type="submit" name="update_registration" class="button update-button">Update Registration</button>
+                <a href="?delete=registration" class="button delete-button">Delete Registration</a>
+            </div>
+
+            <!-- Preparation Window -->
+            <h3>Preparation Window</h3>
+            <label for="preparation_start">Start Time:</label>
+            <input type="datetime-local" id="preparation_start" name="preparation_start"
+                   value="{{ preparation_window.start_time|date:'Y-m-d\TH:i' }}" required>
+            <label for="preparation_end">End Time:</label>
+            <input type="datetime-local" id="preparation_end" name="preparation_end"
+                   value="{{ preparation_window.end_time|date:'Y-m-d\TH:i' }}" required>
+            <div class="button-group">
+                <button type="submit" name="update_preparation" class="button update-button">Update Preparation</button>
+                <a href="?delete=preparation" class="button delete-button">Delete Preparation</a>
+            </div>
+
+            <!-- Voting Window -->
+            <h3>Voting Window</h3>
+            <label for="voting_start">Start Time:</label>
+            <input type="datetime-local" id="voting_start" name="voting_start"
+                   value="{{ voting_window.start_time|date:'Y-m-d\TH:i' }}" required>
+            <label for="voting_end">End Time:</label>
+            <input type="datetime-local" id="voting_end" name="voting_end"
+                   value="{{ voting_window.end_time|date:'Y-m-d\TH:i' }}" required>
+            <div class="button-group">
+                <button type="submit" name="update_voting" class="button update-button">Update Voting</button>
+                <a href="?delete=voting" class="button delete-button">Delete Voting</a>
+            </div>
+        </form>
+
+        <!-- Recent Activity Section for Registration -->
+        {% if registration_activity %}
+            <div class="recent-activity">
+                <h3>Recent Registration Activity</h3>
+                <ul>
+                    {% for activity in registration_activity %}
+                        <li>{{ activity }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="?clear=registration" class="button delete-button">Clear Recent Activity</a>
+            </div>
+        {% endif %}
+
+        <!-- Recent Activity Section for Preparation -->
+        {% if preparation_activity %}
+            <div class="recent-activity">
+                <h3>Recent Preparation Activity</h3>
+                <ul>
+                    {% for activity in preparation_activity %}
+                        <li>{{ activity }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="?clear=preparation" class="button delete-button">Clear Recent Activity</a>
+            </div>
+        {% endif %}
+
+        <!-- Recent Activity Section for Voting -->
+        {% if voting_activity %}
+            <div class="recent-activity">
+                <h3>Recent Voting Activity</h3>
+                <ul>
+                    {% for activity in voting_activity %}
+                        <li>{{ activity }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="?clear=voting" class="button delete-button">Clear Recent Activity</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

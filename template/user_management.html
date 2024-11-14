@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <style>
+        /* Internal CSS for styling the table and search input */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #searchUsers {
+            margin: 20px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border 0.3s;
+        }
+        #searchUsers:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .active-icon {
+            color: green;
+        }
+        .inactive-icon {
+            color: red;
+        }
+        a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+      
+        .back-button {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            #searchUsers {
+                width: 100%;
+            }
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 10px;
+            }
+            .btn {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            th, td {
+                font-size: 12px;
+            }
+        }
+    </style>
+    <script>
+        // JavaScript function to search users in the table
+        function searchFunction() {
+            const input = document.getElementById("searchUsers");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("usersTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const tdUsername = tr[i].getElementsByTagName("td")[0];
+                const tdEmail = tr[i].getElementsByTagName("td")[1];
+
+                if (tdUsername || tdEmail) {
+                    const usernameText = tdUsername.textContent || tdUsername.innerText;
+                    const emailText = tdEmail.textContent || tdEmail.innerText;
+
+                    if (usernameText.toLowerCase().indexOf(filter) > -1 || emailText.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // JavaScript function for delete confirmation
+        function confirmDelete(event, userName) {
+            if (!confirm(`Are you sure you want to delete ${userName}?`)) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+    
+    <input type="text" id="searchUsers" placeholder="Search Users" onkeyup="searchFunction()">
+
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Matriculation Number</th>
+                <th>User Type</th>
+                <th>Staff Status</th>
+                <th>Active Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.matriculation_number }}</td>
+                <td>{{ user.user_type }}</td>
+                <td>
+                    {% if user.is_staff %}
+                        <span class="icon active-icon">✔️</span>
+                    {% else %}
+                        <span class="icon inactive-icon">❌</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_active %}
+                        <span class="icon active-icon">✔️</span>
+                    {% else %}
+                        <span class="icon inactive-icon">❌</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_deleted %}
+                        <form action="{% url 'undelete_user' user.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="border: none; background: none; color: #007bff; cursor: pointer;">Undelete</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'delete_user' user.id %}" onclick="confirmDelete(event, '{{ user.username }}')">Delete</a>
+                    {% endif %}
+                    <a href="{% url 'mark_valid' user.id %}">Mark Valid</a>
+                    <a href="{% url 'mark_invalid' user.id %}">Mark Invalid</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="back-button">
+        {% if user.is_superuser or user.is_staff %}
+            <a href="{% if user.is_superuser %}{% url 'superuser_dashboard' %}{% else %}{% url 'admin_dashboard' %}{% endif %}" class="btn">Back to Dashboard</a>
+        {% endif %}
+    </div>
+</body>
+</html>

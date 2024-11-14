@@ -1,0 +1,98 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #81d4fa, #f0f4c3);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent body scrolling */
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    max-height: 90vh; /* Limit height to create scrollable container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    text-align: center;
+    position: relative;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    color: #ff3b3f;
+    margin-bottom: 20px;
+}
+
+label {
+    margin-top: 10px;
+    text-align: left;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    background: #f0f4c3;
+    transition: background 0.3s;
+    width: 100%;
+    font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus {
+    background: #e1f5fe;
+    outline: none;
+}
+
+button {
+    background: linear-gradient(90deg, #ff3b3f, #ff6f61);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #ff6f61, #ff3b3f);
+}
+
+.error {
+    color: red;
+    margin-top: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .container {
+        padding: 15px;
+        max-height: 85vh; /* Adjust height for smaller devices */
+    }
+
+    input, select {
+        font-size: 13px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}

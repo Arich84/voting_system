@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .captcha-list {
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .captcha-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .captcha-item:last-child {
+            border-bottom: none;
+        }
+        .captcha-text {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .captcha-status {
+            color: #666;
+        }
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .btn-generate {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-test {
+            background-color: #007bff;
+            color: white;
+            width: auto;
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .recent-activity {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+            .button-group .btn {
+                width: 100%;
+                margin: 5px 0; /* Adds space between buttons on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Captcha Management</h2>
+
+    <!-- Display success/error messages -->
+    {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+                <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- CAPTCHA List -->
+    <div class="captcha-list">
+        {% for captcha in captchas %}
+        <div class="captcha-item">
+            <span class="captcha-text">{{ captcha.captcha_text }}</span>
+            <span class="captcha-status">
+                Used {{ captcha.used_count }} time(s)
+                {% if captcha.is_expired %}
+                    (Expired)
+                {% endif %}
+            </span>
+            <form method="POST" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="captcha_id" value="{{ captcha.id }}">
+                <button type="submit" name="delete_captcha" class="btn btn-delete">Delete</button>
+            </form>
+        </div>
+        {% empty %}
+        <p style="text-align: center; padding: 20px; color: #999;">No CAPTCHAs available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Button Group for Generate and Delete All CAPTCHAs -->
+    <div class="button-group">
+        <form method="POST" style="flex: 1; margin-right: 5px;">
+            {% csrf_token %}
+            <button type="submit" name="generate_new" class="btn btn-generate">Generate New CAPTCHA</button>
+        </form>
+        <form method="POST" style="flex: 1; margin-left: 5px;">
+            {% csrf_token %}
+            <button type="submit" name="delete_all" class="btn btn-delete">Delete All CAPTCHAs</button>
+        </form>
+    </div>
+
+    <!-- Test CAPTCHA Section -->
+    <h3>Test CAPTCHA</h3>
+    <p>Test this CAPTCHA: <strong>{{ test_captcha_text }}</strong></p>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="captcha_text" placeholder="Enter CAPTCHA text" required>
+        <button type="submit" name="test_captcha" class="btn btn-test">Test CAPTCHA</button>
+    </form>
+
+    <!-- Recent Activity Section -->
+    <h3>Recent Activity</h3>
+    <div class="recent-activity">
+        {% for activity in recent_activity %}
+            <p>{{ activity }}</p>
+        {% empty %}
+            <p>No recent activity.</p>
+        {% endfor %}
+    </div>
+    
+    <!-- Delete All Recent Activities Button -->
+    <form method="POST" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" name="delete_all_activities" class="btn btn-delete">Delete All Recent Activities</button>
+    </form>
+
+    
+</div>
+
+
+</body>
+</html>

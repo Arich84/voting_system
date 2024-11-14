@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+    <style>
+        /* Style for the notification list */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        li.read {
+            background-color: #e1e1e1;
+        }
+        li.unread {
+            background-color: #f0f8ff;
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            float: right;
+        }
+        .delete-btn:hover {
+            background-color: #e60000;
+        }
+        small {
+            display: block;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notifications</h1>
+
+    <!-- Notifications list -->
+    <ul>
+        {% for notification in notifications %}
+            <li class="{% if notification.is_read %}read{% else %}unread{% endif %}">
+                <strong>{{ notification.notification_type }}</strong><br>
+                {{ notification.message }}<br>
+                <small>{{ notification.created_at }}</small>
+                <button class="delete-btn" onclick="deleteNotification({{ notification.id }})">Delete</button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // JavaScript to delete notification
+        function deleteNotification(notificationId) {
+            if (confirm('Are you sure you want to delete this notification?')) {
+                $.ajax({
+                    url: '{% url "delete_notification" %}',  // Replace with your delete notification URL
+                    method: 'POST',
+                    data: {
+                        'id': notificationId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        alert('Notification deleted successfully.');
+                        location.reload();  // Reload the page to reflect changes
+                    },
+                    error: function(error) {
+                        console.error('Error deleting notification:', error);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!-- results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Election Results</title>
+</head>
+<body>
+    <h1>Live Election Results</h1>
+    <ul>
+        {% for candidate in results %}
+            <li>{{ candidate.position.name }} - {{ candidate.user.username }}: {{ candidate.vote_count }} votes</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

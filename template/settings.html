@@ -1,0 +1,21 @@
+<!-- settings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+</head>
+<body>
+    <h1>Site Settings</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="site_title">Site Title:</label>
+            <input type="text" id="site_title" name="site_title" 
+                   value="{{ settings.site_title }}" required>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            outline: none;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feedback-item {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-item a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .feedback-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.8em;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            textarea, select, button {
+                font-size: 1em;
+                padding: 10px;
+            }
+
+            button {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.6em;
+            }
+
+            form {
+                padding: 10px;
+            }
+
+            textarea, select, button {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Your Feedback</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <textarea name="new_feedback" placeholder="Enter your feedback" required></textarea>
+    <select name="rating" required>
+        <option value="">Rate</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <button type="submit">Submit Feedback</button>
+</form>
+
+<h3><center>Your Previous Feedbacks:</center></h3>
+<ul>
+    {% for feedback in user_feedbacks %}
+        <li>
+            <div class="feedback-item">
+                <p>{{ feedback.message }} - <a href="{% url 'feedback_chat' feedback.id %}">Chat</a></p>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

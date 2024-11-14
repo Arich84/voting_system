@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superuser Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMtxS1urwLxD92FfqqcYl1IWdBCz4e2ODeQz2" crossorigin="anonymous">
+    <style>
+        :root {
+            --primary-bg: #343a40;
+            --primary-accent: #007bff;
+            --secondary-accent: #00c6ff;
+            --background-gradient: linear-gradient(to right, #eef2f3, #8e9eab);
+            --card-bg: white;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0 20px 0 0;
+            background: var(--background-gradient);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--primary-bg);
+            color: white;
+            width: 220px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .sidebar h2 {
+            color: var(--secondary-accent);
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .profile img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 1px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .sidebar a:hover {
+            background-color: #495057;
+            transform: translateY(-2px);
+        }
+
+        .sidebar a:hover i {
+            transform: scale(1.1);
+            transition: transform 0.2s;
+        }
+
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .dropdown a {
+            padding: 10px 0;
+            text-align: left;
+            font-size: 0.8rem;
+            background-color: #495057;
+        }
+
+        .dropdown a:hover {
+            background-color: #6c757d;
+        }
+
+        .container {
+            margin-left: 240px;
+            padding: 20px;
+            flex-grow: 1;
+            max-width: calc(100% - 240px);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: calc(50% - 20px);
+            box-sizing: border-box;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .statistics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            border-radius: 8px;
+            padding: 10px;
+            flex: 1;
+            min-width: 140px;
+            max-width: 140px;
+            text-align: center;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .total-users {
+            background: linear-gradient(to bottom right, #007bff, #0056b3);
+        }
+        .active-users {
+            background: linear-gradient(to bottom right, #28a745, #218838);
+        }
+        .total-candidates {
+            background: linear-gradient(to bottom right, #ff9800, #f57c00);
+        }
+        
+        .total-admin {
+            background: linear-gradient(to bottom right, #36322c, #f57c00);
+        }
+
+        .total-superuser{
+            background: linear-gradient(to bottom right, #c9892a, #f57c00);
+        }
+
+        .recent-activity {
+            width: 100%;
+            max-width: 100%;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: var(--primary-accent);
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activity-list li {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid var(--primary-accent);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-left: 0;
+                max-width: 100%;
+            }
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                height: auto;
+                transform: translateY(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateY(0);
+            }
+            .card, .stat-card {
+                width: 100%;
+            }
+            .toggle-sidebar {
+                display: block;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background: var(--primary-accent);
+                color: white;
+                padding: 10px;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 1000;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: var(--background-gradient);
+            color: black;
+            border-top: 1px solid #ddd;
+            width: 100%;
+            margin-top: auto;
+        }
+        
+    </style>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.overlay').classList.toggle('show');
+        }
+
+        function toggleDropdown(dropdownClass) {
+            const dropdown = document.querySelector(`.${dropdownClass}`);
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="toggle-sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="sidebar">
+        <div class="profile">
+            <img src="https://via.placeholder.com/80" alt="Profile Image">
+            <h4>Superuser Username</h4>
+        </div>
+        <a href="#" aria-label="Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <div>
+            <a href="javascript:void(0);" aria-label="Manage Users" onclick="toggleDropdown('manage-users-dropdown')"><i class="fas fa-users"></i> Manage Users</a>
+            <div class="dropdown manage-users-dropdown">
+                <a href="{% url 'register_admin' %}" aria-label="Register Admin">Register Admin</a>
+                <a href="{% url 'user_management' %}" aria-label="View Users">View Users</a>
+                <a href="{% url 'user_management' %}" aria-label="view Admin">view Admin</a>
+                <a href="{% url 'superuser_management' %}" aria-label="View Superuser">View Superuser</a>
+                <a href="{% url 'manage_roles' %}" aria-label="Manage roles">Manage roles</a>
+                <a href="{% url 'user_input' %}" aria-label="Comparison Database">Comparison Data</a>
+                <a href="{% url 'insert_program_and_level' %}" aria-label="Edit level/Program">Edit level/Program</a>
+            </div>
+        </div>
+        <div>
+            <a href="javascript:void(0);" aria-label="Election Management" onclick="toggleDropdown('Election-management-dropdown')"><i class="fas fa-vote-yea"></i>Election Management</a>
+            <div class="dropdown Election-management-dropdown">
+                <a href="{% url 'custom_admin_view' %}" aria-label="Election Phase">Election Phase</a>
+                <a href="{% url 'manage_positions' %}" aria-label="Manage position">Manage position</a>
+                <a href="{% url 'voting_dashboard' %}" aria-label="View Votes">View Votes</a>
+                <a href="{% url 'custom_admin_image' %}" aria-label="Slide">Slide</a>
+                <a href="{% url 'create_announcement' %}" aria-label="Announcement">Announcement</a>
+            </div>
+        </div>
+
+        <div>
+            <a href="javascript:void(0);" aria-label="Candidates Management" onclick="toggleDropdown('candidates-management-dropdown')"><i class="fas fa-user-check"></i> Candidates Management</a>
+            <div class="dropdown candidates-management-dropdown">
+                <a href="{% url 'admin_candidates' %}" aria-label="Candidates">Candidates</a>
+                <a href="{% url 'candidates_view' %}" aria-label="View Candidates">ApproveCandidates</a>
+            </div>
+        </div>
+        <div>
+            <a href="javascript:void(0);" aria-label="Feedback Management" onclick="toggleDropdown('feedback-management-dropdown')"><i class="fas fa-comment-dots"></i> Feedback Management</a>
+            <div class="dropdown feedback-management-dropdown">
+                <a href="#" aria-label="View Feedback">View Feedback</a>
+                <a href="#" aria-label="Respond to Feedback">Respond to Feedback</a>
+                <a href="#" aria-label="Respond to Admin">Respond to Admin</a>
+            </div>
+        </div>
+        <div>
+            <a href="javascript:void(0);" aria-label="Settings" onclick="toggleDropdown('settingsDropdown')"><i class="fas fa-comment-dots"></i>Settings</a>
+            <div class="dropdown settingsDropdown">
+                <a href="#" aria-label="User Management">User Management</a>
+               <a href="#" aria-label="Privacy Control">Privacy Control</a>
+               <a href="#" aria-label="Privacy Control">Edit Title</title></a>
+               <a href="#" aria-label="Privacy Control">Edit logo/logo name</a>
+               <a href="#" aria-label="Privacy Control">Edit page</a>
+
+
+            </div>
+        </div>
+
+        <a href="#" aria-label="Logout" style="background-color: #dc3545;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="container">
+        <!-- Add cards for statistics -->
+        <div class="statistics">
+            
+                    <div class="stat-card total-users">
+                        <h3>Total Users</h3>
+                        <p>{{ total_users }}</p>
+                    </div>
+                    <div class="stat-card active-users">
+                        <h3>Active Users</h3>
+                        <p>{{ active_users }}</p>
+                    </div>
+                    <div class="stat-card total-users">
+                        <h3>Users</h3>
+                        <p>{{ regular_users_count }}</p>
+                    </div>
+                    <div class="stat-card total-admin">
+                        <h3>Admins</h3>
+                        <p>{{ total_admin }}</p>
+                    </div>
+                    <div class="stat-card total-superuser">
+                        <h3>Superusers</h3>
+                        <p>{{ total_superuser }}</p>
+                    </div>
+                
+        </div>
+        
+        <div class="card recent-activity">
+            <h3>Recent Activity</h3>
+            <ul class="activity-list">
+                <li>User JohnDoe voted for Candidate JaneSmith.</li>
+                <li>Admin123 approved Candidate Application of User UserXYZ.</li>
+                <li>User JaneDoe submitted feedback on recent updates.</li>
+                <li>New user User456 registered an account.</li>
+                <li>Candidate Application submitted by User789.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        &copy; 2023 Superuser Dashboard
+    </footer>
+</body>
+</html>

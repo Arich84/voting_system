@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reply to Feedback</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+
+<h1>Reply to Feedback from {{ feedback.user.username }}</h1>
+
+<p><strong>Feedback:</strong> {{ feedback.message }}</p>
+<p><strong>Rating:</strong> {{ feedback.rating }}</p>
+
+
+<form method="post">
+    {% csrf_token %}
+    <h2>Feedback from {{ feedback.user.username }}</h2>
+    <p>{{ feedback.message }}</p>
+    
+    <label for="response">Your Response:</label>
+    <textarea name="response" required></textarea>
+    
+    <button type="submit">Submit Response</button>
+</form>
+
+
+<a href="{% url 'feedback_management' %}">Back to Feedback Management</a>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+</body>
+</html>

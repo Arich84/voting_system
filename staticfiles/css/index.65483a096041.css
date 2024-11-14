@@ -1,0 +1,976 @@
+Global Reset
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Default Light Mode Styles */
+body {
+    background: linear-gradient(to right, #203A4D, #ED4264); /* Light mode gradient */
+    color: #ffffff; /* Text color for light mode */
+    line-height: 1.6;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background: linear-gradient(to right, #1a1a1a, #333333, #4d4d4d); /* Dark mode gradient */
+    color: #ffffff; /* Keep text white */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background: linear-gradient(to right, #121212, #1E1E1E, #282828); /* Deep gradient for a richer background */
+    color: #ffffff; /* Keep text white */
+}
+
+/* Header and Footer */
+header, footer {
+    background: rgba(20, 20, 20, 0.9); /* Darker background with slight transparency */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Deeper shadow for more depth */
+}
+
+/* Adjust text color for dark mode */
+header h1, nav ul li a, .vote-item h2 {
+    color: #FFD700; /* Maintain contrast in dark mode */
+}
+
+/* Enhanced Welcome Section */
+.welcome-section {
+    background: rgba(30, 30, 30, 0.8); /* Darker, semi-transparent background */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* Stronger shadow for emphasis */
+}
+
+/* Vote Items */
+.vote-item {
+    background: linear-gradient(135deg, #4A00E0, #8E2DE2); /* Beautiful purple gradient for vote items */
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow for vote items */
+}
+
+/* Slider Section */
+.slider-section {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* Enhanced shadow for the slider */
+}
+
+/* Navigation Styles */
+nav {
+    background: rgba(30, 30, 30, 0.8); /* Darker background for nav */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px 20px; /* Padding around nav items */
+    backdrop-filter: blur(15px); /* Stronger blur for a modern feel */
+}
+
+/* Footer Section */
+footer {
+    background: rgba(20, 20, 20, 0.9); /* Darker footer */
+    padding: 20px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5); /* Shadow to lift the footer */
+}
+
+/* Hover Effects */
+nav ul li a:hover {
+    background-color: rgba(255, 215, 0, 0.3); /* Softer gold overlay on hover */
+    color: #FFD700; /* Retain bright gold on hover */
+}
+
+/* Button Styles */
+.welcome-buttons .button {
+    background: linear-gradient(135deg, #FF6F61, #DE5B9A); /* Coral to pink gradient for buttons */
+}
+
+/* Side Panel */
+.side-panel {
+    background: linear-gradient(to bottom right, #8E2DE2, #4A00E0); /* Vibrant purple gradient */
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+}
+
+/* Header, Footer, and Other Sections */
+header, footer, .welcome-section, .vote-item {
+    background: rgba(0, 0, 0, 0.7); /* Darker background for elements in dark mode */
+}
+
+/* Adjust text color for dark mode */
+header h1, nav ul li a, .vote-item h2 {
+    color: #FFD700; /* Maintain contrast in dark mode */
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-switch {
+    display: none;
+}
+
+.theme-toggle-label {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.4s, transform 0.3s;
+}
+
+.theme-toggle-label:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.theme-toggle-label .sun-icon {
+    color: #FFD700; /* Bright gold */
+}
+
+.theme-toggle-label .moon-icon {
+    color: #ffffff;
+    opacity: 0;
+}
+
+.theme-switch:checked + .theme-toggle-label .sun-icon {
+    opacity: 0;
+}
+
+.theme-switch:checked + .theme-toggle-label .moon-icon {
+    opacity: 1;
+}
+
+/* Header Styles with a Harmonious Gradient and Top Margin */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px; /* Padding on all sides */
+    margin-top: 30px; /* Space at the top */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    border-radius: 0 0 20px 20px; /* Rounded bottom corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: calc(100% - 40px); /* Full width minus padding */
+    margin: 30px auto 0; /* Center the header with top margin */
+}
+
+header h1 {
+    font-size: 3rem; /* Increased font size */
+    font-family: 'Dancing Script', cursive; /* Beautiful font for header */
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #FFD700, #FF6F61); /* Gradient text */
+    -webkit-background-clip: text; /* Clip background to text */
+    -webkit-text-fill-color: transparent; /* Make text transparent for gradient effect */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+}
+
+/* Welcome Section with Matching Gradient and Normal Height */
+.welcome-section {
+    padding: 40px 20px; /* Increased padding for better spacing */
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1); /* Light background for contrast */
+    color: white;
+    margin: 20px auto; /* Center the welcome section */
+    width: calc(100% - 40px); /* Same width as header */
+    border-radius: 20px; /* Slightly curved corners */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-section h2 {
+    font-size: 2.5rem; /* Adjusted font size for prominence */
+    margin-bottom: 10px; /* Smaller margin */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-section p {
+    font-size: 1.1rem; /* Normal font size */
+    max-width: 700px;
+    margin: 0 auto 20px auto; /* Smaller margin */
+}
+
+.welcome-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between buttons */
+}
+
+/* Button Styles */
+.welcome-buttons .button {
+    padding: 12px 30px; /* Slightly increased padding */
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #FF6F61, #DE5B9A); /* Coral to pink gradient */
+    color: white;
+    font-weight: bold;
+    font-size: 1rem; /* Reduced font size */
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+}
+
+.welcome-buttons .button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Slider Section */
+.slider-section {
+    margin: 60px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-container {
+    display: flex;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.slide {
+    min-width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 20px;
+    transition: transform 0.3s;
+}
+
+.slide img:hover {
+    transform: scale(1.05);
+}
+
+/* Slider Navigation */
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.slider-nav button {
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    color: #000;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border-radius: 50%;
+}
+
+.slider-nav button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+/* Vote Section with Wider Gradient Cards and Extended Height */
+.vote-section {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.vote-item {
+    text-align: center;
+    max-width: 400px; /* Increased width for more space */
+    width: 100%; /* Allow full width up to max-width */
+    padding: 50px; /* Increased padding for a taller card */
+    background: linear-gradient(135deg, #FF6F61, #DE5B9A); /* Coral to pink gradient */
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.vote-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.vote-item h2 {
+    font-size: 2rem; /* Adjusted font size */
+    margin-bottom: 15px;
+}
+
+.vote-item p {
+    font-size: 1.1rem; /* Adjusted font size */
+}
+
+/* Extended Your Vote and Vote Complete Section */
+.vote-section .vote-item {
+    height: 300px; /* Increased height for the vote sections */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content vertically */
+}
+
+.vote-section .vote-item h2 {
+    font-size: 2rem; /* Adjusted font size */
+}
+
+.vote-section .vote-item p {
+    font-size: 1.1rem; /* Adjusted font size */
+}
+
+/* Enhanced Side Panel Styles */
+.side-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 300px; /* Slightly wider */
+    background: linear-gradient(to bottom right, #8E2DE2, #4A00E0); /* Vibrant purple gradient */
+    padding: 30px;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 0 20px 20px 0;
+    color: #fff;
+}
+
+.side-panel h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.side-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-panel ul li {
+    margin: 15px 0;
+}
+
+.side-panel ul li a {
+    text-decoration: none; /* Remove underline */
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.side-panel ul li a:hover {
+    background: rgba(255, 255, 255, 0.4); /* Lighter hover effect */
+    transform: translateX(5px); /* Slightly move to the right */
+}
+/* 
+/* Navigation Styles
+nav {
+    background: rgba(255, 255, 255, 0.15); /* Semi-transparent white for a sleek look */
+    /* border-radius: 10px; Rounded corners */
+    /* padding: 10px 20px; Padding around nav items */
+    /* backdrop-filter: blur(10px); /* Blur effect for a modern feel 
+} */
+/* 
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* Increased space between navigation items 
+} */
+/* 
+nav ul li {
+    position: relative; /* For positioning the pseudo-element 
+} */ */
+/* 
+nav ul li a {
+    text-decoration: none; /* Remove underline 
+    color: #FFD700; /* Bright gold for contrast 
+    padding: 10px 10px; /* Increased padding for a larger clickable area 
+    border-radius: 5px; /* Rounded corners for a softer look
+    transition: background-color 0.4s ease, transform 0.4s ease, color 0.4s ease;  Smooth transitions 
+    font-family: 'Roboto', sans-serif; /* Change to a more modern font 
+    font-weight: 500; /* Medium weight for better legibility 
+    letter-spacing: 1px; /* Slightly increased letter-spacing 
+}  */
+
+/* 
+nav ul li a:hover {
+    background-color: rgba(255, 215, 0, 0.2); 
+    transform: translateY(-4px); 
+    color: #fff; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); 
+    
+} */
+
+/* Active Link Indicator */
+/* nav ul li a.active {
+    color: #FF6F61; /* Active link color 
+    font-weight: 600; /* Bold weight for active link 
+    border-bottom: 3px solid #FFD700; /* Underline effect for active link 
+} */
+
+/* nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px; /* Position below the link 
+    width: 0;
+    height: 3px; /* Height of the underline 
+    background: #FFD700; /* Color of the underline 
+    transition: width 0.4s ease, left 0.4s ease; /* Smooth transition for the underline 
+} */
+
+/* nav ul li a:hover::after {
+    width: 500%; /* Expand the underline on hover 
+    left: 0; /* Align to the left 
+} */
+
+/* Footer Section with Enhanced Styles Matching Background
+footer {
+    background: rgba(255, 255, 255, 0.1); /* Light transparent background */
+    /* padding: 20px;
+    text-align: center;
+    color: white;
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Slight border for separation 
+} 
+/* 
+Footer Links
+.footer-links {
+    margin: 20px 0; /* Spacing between footer content and links 
+} */
+/* 
+.footer-links a {
+    color: #FFD700; /* Gold color for links for contrast */
+    text-decoration: none; /* Remove underline 
+    margin: 0 15px; /* Space between links 
+    font-weight: 500; /* Medium weight for better visibility 
+    transition: color 0.3s, transform 0.3s; /* Smooth transitions 
+} 
+
+/* Hover Effects for Footer Links */
+.footer-links a:hover {
+    color: #FF6F61; /* Change to a coral color on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Footer Copyright */
+.footer-copyright {
+    margin-top: 20px; /* Space above copyright text */
+    font-size: 0.9rem; /* Smaller font for copyright */
+    color: rgba(255, 255, 255, 0.7); /* Lighter color for contrast */
+} */
+
+.slider-section {
+    margin: 60px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 20px;
+    transition: transform 0.3s;
+}
+
+.slide img:hover {
+    transform: scale(1.05);
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.slider-nav button {
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    color: #000;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border-radius: 50%;
+}
+
+.slider-nav button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+/* Add this to your index.css */
+
+/* Slider Section */
+.slider-section {
+    position: relative;
+    width: 80%; /* Adjust as needed */
+    max-width: 800px; /* Maximum width for larger screens */
+    margin: auto; /* Center the slider */
+    overflow: hidden; /* Hide overflow */
+}
+
+.slider-container {
+    display: flex; /* Arrange slides in a row */
+    transition: transform 0.5s ease; /* Smooth transition */
+    width: 100%; /* Ensure the container uses full width */
+}
+
+.slide {
+    min-width: 100%; /* Each slide takes the full width of the container */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.slide img {
+    width: 100%; /* Make the image take full width of the slide */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: adds rounded corners */
+}
+
+
+
+
+/* Header Styles for Desktop and Large Screens */
+/* header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: calc(100% - 40px);
+    margin: 30px auto 0;
+} */
+
+/* header h1 {
+    font-size: 3rem;
+    font-family: 'Dancing Script', cursive;
+    background: linear-gradient(90deg, #FFD700, #FF6F61);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+} */
+/* 
+nav ul {
+    display: flex;
+    justify-content: space-between; /* Space between nav items 
+    align-items: center; /* Vertically align nav items 
+    gap: 40px; /* Increased space between nav items 
+    list-style: none;
+    padding: 0;
+} */
+
+/* nav ul li {
+    display: inline-block; 
+} */
+
+/* 
+
+/* Media Query for Tablets (768px and below) */
+/* @media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+        width: calc(100% - 30px);
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+
+    nav ul li a {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+} */
+
+/* Media Query for Mobile Devices (480px and below) */
+/* @media (max-width: 480px) {
+    header {
+        padding: 10px;
+        width: calc(100% - 20px);
+        flex-direction: column; /* Stack header content vertically 
+        align-items: flex-start; /* Align items to the left 
+    }
+
+    header h1 {
+        font-size: 2rem;
+        margin-bottom: 15px; /* Add space below the title 
+    }
+
+    nav ul {
+        justify-content: flex-start; /* Align nav items to the left 
+        gap: 10px;
+        flex-wrap: wrap; /* Wrap nav items onto multiple lines if necessary 
+    }
+
+    nav ul li a {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+/* }
+/* General header styles 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+   
+    color: white;
+} */
+/* 
+
+header h1 {
+    font-size: 3.5rem;
+    font-family: 'Dancing Script', cursive;
+    background: linear-gradient(90deg, #FFD700, #FF6F61);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    transition: font-size 0.3s ease, margin 0.3s ease;
+} */
+ */
+/* 
+nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+    border-radius: 5px;
+} */ */
+
+/* Toggle button styling */
+.toggle-theme-btn {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    background-color: #444;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-theme-btn:hover {
+    background-color: #666;
+}
+
+/* Breakpoints for responsive h1, navigation, and toggle button */
+
+/* Large Desktop Screens (1200px and above) */
+/* @media (min-width: 1200px) {
+    header h1 {
+        font-size: 4rem;
+    }
+}
+
+/* Desktop Screens (1024px to 1200px) */
+/* @media (max-width: 1200px) and (min-width: 1024px) {
+    header h1 {
+        font-size: 3.5rem;
+    }
+    nav ul li a {
+        font-size: 1.1rem;
+    }
+} */ 
+
+/* Tablets (768px to 1024px)
+@media (max-width: 1024px) and (min-width: 768px) {
+    header h1 {
+        font-size: 3rem;
+    }
+    nav ul {
+        justify-content: space-between;
+    }
+    nav ul li {
+        margin: 0 15px;
+    }
+    nav ul li a {
+        font-size: 1rem;
+    }
+    .toggle-theme-btn {
+        font-size: 1.1rem;
+    }
+} */
+
+/* Small Tablets (600px to 768px) */
+/* @media (max-width: 768px) and (min-width: 600px) {
+    header h1 {
+        font-size: 2.7rem;
+    }
+    nav ul {
+        flex-direction: row;
+        justify-content: center;
+    }
+    nav ul li {
+        margin: 0 10px;
+    }
+    nav ul li a {
+        font-size: 1rem;
+    }
+    .toggle-theme-btn {
+        font-size: 1.1rem;
+    }
+} */
+
+/* Mobile Devices (480px to 600px) */
+/* @media (max-width: 600px) and (min-width: 480px) {
+    header h1 {
+        font-size: 2.3rem;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav ul li {
+        margin: 10px 0;
+    }
+    nav ul li a {
+        font-size: 1rem;
+    }
+    .toggle-theme-btn {
+        font-size: 1rem;
+    }
+} */
+
+/* Small Mobile Devices (below 480px) */
+/* @media (max-width: 480px) {
+    header h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav ul li {
+        margin: 10px 0;
+    }
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+    .toggle-theme-btn {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+} */
+
+/* Countdown Section */
+.countdown-section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1); /* Light background for contrast */
+    border-radius: 10px;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Headings and Paragraphs */
+.countdown-section h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.countdown-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Countdown Timer */
+#countdown {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual Countdown Elements */
+#countdown span {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Live Results Section */
+#live-results {
+    margin-top: 20px;
+    text-align: left;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+#live-results p {
+    font-size: 1.3rem;
+    margin: 10px 0;
+}
+
+#live-results span {
+    font-weight: bold;
+    color: #ffd700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .countdown-section {
+        padding: 20px;
+    }
+
+    #countdown {
+        font-size: 1.2rem;
+        padding: 10px;
+    }
+
+    #live-results p {
+        font-size: 1.1rem;
+    }
+}
+
+.countdown-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#countdown {
+    font-size: 1.5rem;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#countdown span {
+    font-weight: bold;
+}
+
+#live-results p {
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+.live-results-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.candidate-result {
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.5s ease-in-out; /* Smooth animation */
+}
+
+/* You can use different colors for different candidates */
+#progress-candidate2 {
+    background-color: #2196f3;
+}
+
+#progress-candidate3 {
+    background-color: #ff9800;
+}
+
+
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.timer-block {
+    text-align: center;
+}
+
+.timer-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.timer-label {
+    font-size: 1rem;
+}
+.announcements-section {
+    padding: 20px;
+    background-color: #dacbcb;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: #000;
+}
+
+.announcements-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between announcements */
+}
+
+.announcement-item {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-item h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.announcement-item p {
+    margin: 10px 0;
+}
+
+.announcement-item small {
+    color: #666;
+    font-size: 0.9em;
+}

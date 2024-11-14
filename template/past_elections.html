@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Elections</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        li .candidate {
+            font-weight: bold;
+            color: #007bff;
+        }
+        li .position {
+            color: #555;
+        }
+        li .votes {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Past Elections</h2>
+        {% if past_elections %}
+            <ul>
+                {% for election in past_elections %}
+                    <li>
+                        <span class="candidate">{{ election.user.get_full_name }}</span> 
+                        ran for <span class="position">{{ election.position.name }}</span> 
+                        and received <span class="votes">{{ election.total_votes }} votes</span>.
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No past elections available yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

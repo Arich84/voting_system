@@ -1,0 +1,235 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - V_FPOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #f0f4c3, #81d4fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .main-container {
+            background-color: #fff;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Header Logo */
+        .logo h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        /* Login Form */
+        h1 {
+            font-size: 1.8rem;
+            margin: 10px 0 20px;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 0.9rem;
+            margin-top: 15px;
+            text-align: left;
+            width: 100%;
+        }
+        input[type="text"], input[type="password"], input[type="text"]#captcha_response {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* CAPTCHA */
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .captcha-image {
+            height: 40px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Buttons */
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            margin-top: 15px;
+        }
+        .forgot-password, .register-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .forgot-password:hover, .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Messages */
+        .messages {
+            background-color: #ffefef;
+            color: #d9534f;
+            padding: 10px;
+            border-radius: 5px;
+            list-style: none;
+            font-size: 0.9rem;
+        }
+        .messages li {
+            margin: 5px 0;
+        }
+
+        /* Footer */
+        footer p {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            label, input[type="text"], input[type="password"], input[type="text"]#captcha_response {
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px;
+            }
+
+            .captcha-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .captcha-image {
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .captcha-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .captcha-container input[type="text"]#captcha_response {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .messages {
+                font-size: 0.8rem;
+            }
+
+            footer p {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container for Login Form -->
+    <div class="main-container">
+      
+       
+       
+
+        <!-- Display messages for errors or notifications -->
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <label for="username_or_email">Username or Email:</label>
+            <input type="text" id="username_or_email" name="username_or_email" required>
+        
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        
+            <!-- CAPTCHA Section -->
+            <div class="captcha-container">
+                <img src="{{ captcha_image }}" alt="CAPTCHA" class="captcha-image">
+                <input type="text" id="captcha_response" name="captcha_response" placeholder="Enter CAPTCHA" required>
+            </div>
+        
+            <button type="submit">Login</button>
+        </form>
+        
+        <div class="form-actions">
+            <a href="{% url 'password_reset_request_view' %}" class="forgot-password">Forgot Password?</a>
+            <div class="register-link">
+                <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+            </div>
+        </div>
+
+     
+    </div>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+</body>
+</html>

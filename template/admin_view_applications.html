@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Candidate Applications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-around;
+        }
+        .button {
+            padding: 8px 16px;
+            margin: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+        }
+        .approve {
+            background-color: green;
+        }
+        .reject {
+            background-color: red;
+        }
+        .delete {
+            background-color: #f44336;
+        }
+        .message {
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .candidate-image {
+            max-width: 50px;
+            height: auto;
+            border-radius: 50%;
+        }
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Manage Candidate Applications</h2>
+
+    {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Search Form -->
+    <div class="search-container">
+        <form method="GET" action="{% url 'admin_view_candidate_applications' %}">
+            <input type="text" name="search_query" placeholder="Search by Candidate or Position" value="{{ request.GET.search_query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Position</th>
+                <th>Manifesto</th>
+                <th>Status</th>
+                <th>Actions</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+                <tr>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>
+                        
+                        <!-- Display candidate's full name here -->
+                        {% if application.image %}
+                            <img src="{{ application.image.url }}" alt="{{ application.user.full_name }}" class="candidate-image" width="100" height="100">
+                        {% else %}
+                            <p>No Image</p>
+                        {% endif %}
+                        
+                    </td>
+                    
+                    <td>{{ application.position.name }}</td>
+                    <td>{{ application.manifesto }}</td>
+                    <td>
+                        {% if application.status == 'approved' %}
+                            <span style="color: green;">Approved</span>
+                        {% elif application.status == 'rejected' %}
+                            <span style="color: red;">Rejected</span>
+                        {% else %}
+                            <span style="color: orange;">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a href="{% url 'approve_application' application.id %}" class="button approve">Approve</a>
+                        <a href="{% url 'reject_application' application.id %}" class="button reject">Reject</a>
+                        <a href="{% url 'delete_application' application.id %}" class="button delete" onclick="return confirm('Are you sure you want to delete this application?')">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

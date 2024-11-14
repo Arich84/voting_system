@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Chat</title>
+    <style>
+        /* Container styling */
+        .chat-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Message area styling */
+        #messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .message-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #e7f3ff;
+            position: relative;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .message-item strong {
+            font-weight: bold;
+        }
+
+        .message-item small {
+            font-size: 0.8em;
+            color: #777;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .message-item img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        /* Delete button styling */
+        .delete-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Form styling */
+        #message-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #message {
+            width: calc(100% - 130px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-label {
+            font-size: 1.1em;
+            color: #555;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #send-message-btn {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #send-message-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 480px) {
+            #message {
+                width: 100%;
+            }
+            .file-upload {
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <h2>Feedback Chat</h2>
+    <!-- Messages display area -->
+    <div id="messages">
+        {% for message in messages %}
+        <div class="message-item" data-message-id="{{ message.id }}">
+            <!-- <button class="delete-button" onclick="deleteMessage({{ message.id }})">Delete</button> -->
+
+            <strong>{{ message.sender.username }}:</strong> {{ message.message }} <br>
+            {% if message.image %}
+            <img src="{{ message.image.url }}" alt="Image">
+            {% endif %}
+            <small>{{ message.created_at }}</small>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Form to send messages -->
+    <form id="message-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="message" id="message" placeholder="Enter your message" required></textarea>
+        <div class="file-upload">
+            <label for="image" class="file-label"><i class="fas fa-image"></i> Image</label>
+            <input type="file" name="image" id="image" style="display: none;">
+            <button type="submit" id="send-message-btn">Send</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function getCSRFToken() {
+        const csrfToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken='));
+        return csrfToken ? csrfToken.split('=')[1] : null;
+    }
+
+    // Send message without reloading
+    document.getElementById("message-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let message = document.getElementById("message").value;
+        let image = document.getElementById("image").files[0];
+        let formData = new FormData();
+        formData.append("message", message);
+        if (image) formData.append("image", image);
+
+        fetch(window.location.href, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRFToken() },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.message) {
+                appendMessage(data);
+                document.getElementById("message").value = "";
+                document.getElementById("image").value = "";
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+
+    // Append new message
+    function appendMessage(data) {
+        const messagesContainer = document.getElementById("messages");
+        const messageHtml = `
+            <div class="message-item" data-message-id="${data.id}">
+                <button class="delete-button" onclick="deleteMessage(${data.id})">Delete</button>
+                <strong>${data.sender}:</strong> ${data.message} <br>
+                ${data.image ? `<img src="${data.image}" alt="Image">` : ''}
+                <small>${data.created_at}</small>
+            </div>
+        `;
+        messagesContainer.innerHTML += messageHtml;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+// Handle message deletion
+document.querySelectorAll('.delete-message-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            const messageId = this.getAttribute('data-message-id');
+            if (confirm("Are you sure you want to delete this message?")) {
+                fetch(window.location.href + '?message_id=' + messageId, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Message deleted successfully!');
+                        document.querySelector(`[data-message-id='${messageId}']`).remove();
+                    } else {
+                        alert(data.error || 'Error deleting message');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+
+
+
+    // Load messages periodically
+    function fetchNewMessages() {
+        fetch(window.location.href, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+            .then(response => response.json())
+            .then(messages => {
+                const messagesContainer = document.getElementById("messages");
+                messagesContainer.innerHTML = '';
+                messages.forEach(message => appendMessage(message));
+            });
+    }
+
+    setInterval(fetchNewMessages, 5000);
+</script>
+</body>
+</html>

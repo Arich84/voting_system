@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Program and Level</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        h2 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        
+        .back-button {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #45a049;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+          
+        }
+       
+    </style>
+</head>
+<body>
+    <h1>Insert Program/Department/Level</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Add Program</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="program_name" placeholder="Program Name" >
+        <button type="submit">Add Program</button>
+    </form>
+
+    <h2>Add Department</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="department_name" placeholder="Department Name" >
+        <button type="submit">Add Department</button>
+    </form>
+
+    <h2>Add Level</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="level_name" placeholder="Level Name" >
+        <button type="submit">Add Level</button>
+    </form>
+
+    <h2>Existing Programs</h2>
+    <ul>
+        {% for program in programs %}
+            <li>
+                {{ program.name }}
+                <a href="?delete_program={{ program.id }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Existing Levels</h2>
+    <ul>
+
+        
+    <h2>Existing Department</h2>
+    <ul>
+        {% for department in departments %}
+            <li>
+                {{ department.name }}
+                <a href="?delete_department={{ department.id }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Existing Levels</h2>
+    <ul>
+        {% for level in levels %}
+            <li>
+                {{ level.name }}
+                <a href="?delete_level={{ level.id }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="back-button">
+        {% if user.is_superuser or user.is_staff %}
+            <a href="{% if user.is_superuser %}{% url 'superuser_dashboard' %}{% else %}{% url 'admin_dashboard' %}{% endif %}" class="btn">Back to Dashboard</a>
+        {% endif %}
+    </div>
+</body>
+</html>

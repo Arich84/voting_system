@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V_FPOG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 180px;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        /* Logo Section */
+        .sidebar .logo {
+            width: 100%;
+            text-align: left;
+        
+        }
+
+        .sidebar .logo h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        /* Navigation Styling */
+        .sidebar nav {
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            width: 100%;
+        }
+
+        .sidebar nav ul li {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .sidebar nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            width: 100%;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+        <!-- Logo Section -->
+        <div class="logo">
+            <h1>V_FPOG</h1>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    {% elif user.is_staff %}
+                        <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a></li>
+                        <li><a href="{% url 'rules' %}"><i class="fas fa-gavel"></i> Rules</a></li>
+                        <li><a href="{% url 'apply_candidate' %}"><i class="fas fa-user-plus"></i> Apply</a></li>
+                        <li><a href="{% url 'vote' %}"><i class="fas fa-vote-yea"></i> Vote</a></li>
+                        <li><a href=""><i class="fas fa-bell"></i> Notifications</a></li>
+                        <li><a href="{% url 'user_dashboard' %}"><i class="fas fa-user"></i> Profile</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="{% url 'rules' %}"><i class="fas fa-gavel"></i> Rules</a></li>
+                    <li><a href=""><i class="fas fa-users"></i> Candidates</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Welcome Section -->
+        {% if not user.is_authenticated %}
+        <section class="welcome-section">
+            <h2>Welcome to V_FPOG</h2>
+            <p>Join us in shaping the future! Your vote matters, and we're here to ensure your voice is heard in the upcoming elections.</p>
+            <div class="welcome-buttons">
+                <a href="{% url 'register' %}" class="button">Register</a>
+                <a href="{% url 'loginme' %}" class="button">Login</a>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Announcements Section -->
+        <div class="announcements-section">
+            <h2>Announcements</h2>
+            <div class="announcements-container">
+                {% if announcements %}
+                    {% for announcement in announcements %}
+                        <div class="announcement-item">
+                            <h3>{{ announcement.title }}</h3>
+                            <p>{{ announcement.content }}</p>
+                            <small>Posted on {{ announcement.created_at|date:"F j, Y, g:i a" }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No announcements at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+
+       
+
+<!-- Welcome Section -->
+{% if not user.is_authenticated %}
+<section class="welcome-section">
+    <h2>Welcome to V_FPOG</h2>
+    <p>Join us in shaping the future! Your vote matters, and we're here to ensure your voice is heard in the upcoming elections. Register now to participate in the democratic process and make a difference!</p>
+    <div class="welcome-buttons">
+        <a href="{% url 'register' %}" class="button">Register</a>
+        <a href="{% url 'loginme' %}" class="button">Login</a>
+    </div>
+</section>
+{% endif %}
+<!-- Announcements Section -->
+<div class="announcements-section">
+    <h2>Announcements</h2>
+    <div class="announcements-container">
+        {% if announcements %}
+            {% for announcement in announcements %}
+                <div class="announcement-item">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.content }}</p>
+                    <small>Posted on {{ announcement.created_at|date:"F j, Y, g:i a" }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No announcements at the moment.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+        <!-- Registration Countdown or Voting Status -->
+       <!-- Registration Countdown -->
+        <section class="countdown-section">
+            {% if registration_active %}
+            <section >
+                <h2>Registration is Open!</h2>
+                <p>Time remaining to register:</p>
+                <div id="registration-timer" ></div>
+            </section>
+        {% elif preparation_active %}
+            <section>
+                <h2>Preparation Period</h2>
+                <p>Preparation time remaining:</p>
+                <div id="preparation-timer"></div>
+            </section>
+        {% elif voting_active %}
+        <section>
+            <h2>Live Voting</h2>
+            <div id="live-results">
+                {% for candidate in candidates %}
+                    <p>
+                        {{ candidate.user.username }} ({{ candidate.position.name }}): 
+                        <span id="votes-{{ candidate.user.username }}">{{ candidate.total_votes }}</span> votes
+                    </p>
+                {% endfor %}
+            </div>
+        </section>
+        
+        
+        {% else %}
+            <section>
+                <h2>No Active Events</h2>
+            </section>
+        {% endif %}
+        </section>
+      
+
+        <!-- Slider Section -->
+        <div class="slider-section">
+            <div class="slider-container">
+                {% for slide in slides %}
+                    {% if slide.is_active %}
+                        <div class="slide">
+                            <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
+                            <div class="slide-text">
+                                <h3>{{ slide.title }}</h3>
+                                <p>{{ slide.description }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="slider-nav">
+                <button class="prev" onclick="prevSlide()">❮</button>
+                <button class="next" onclick="nextSlide()">❯</button>
+            </div>
+        </div>
+
+        <!-- Vote Section -->
+        <div class="vote-section">
+            <div class="vote-item">
+                <h2>Your Vote</h2>
+                <p>Register now and get ready to vote in the upcoming elections!</p>
+            </div>
+            <div class="vote-item">
+                <h2>Your Power</h2>
+                <p>Use your power.</p>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer>
+            <p>&copy; 2024 V_FPOG. All rights reserved.</p>
+        </footer>
+    </div>
+
+    </div>
+    <script src="{% static 'js/theme.js' %}"></script>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function updateSlidePosition() {
+            const sliderContainer = document.querySelector('.slider-container');
+            const offset = -currentSlide * 100; // Calculate the offset for sliding
+            sliderContainer.style.transform = `translateX(${offset}%)`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides; // Move to the next slide
+            updateSlidePosition();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; // Move to the previous slide
+            updateSlidePosition();
+        }
+
+        // Auto-slide functionality
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlidePosition();
+        }, 5000); // Change slide every 5 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+         
+           
+             
+            
+    // Fetch live voting results every 5 seconds
+    setInterval(function () {
+        fetch('/get_live_results/')
+            .then(response => response.json())
+            .then(data => {
+                data.candidates.forEach(candidate => {
+                    // Use `candidate_id` to find the HTML element and update its vote count
+                    const votesElement = document.getElementById(`votes-${candidate.user__username}`);
+                    if (votesElement) {
+                        votesElement.textContent = `${candidate.votes_count} votes (${candidate.position__name})`;
+                    }
+                });
+            });
+    }, 5000);
+
+
+        
+    </script>
+
+<script>
+    // Function to handle countdown
+    function startCountdown(timeRemaining, elementId) {
+        let seconds = timeRemaining;
+
+        function updateCountdown() {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            const secs = Math.floor(seconds % 60);
+
+            const element = document.getElementById(elementId);
+            element.textContent = `${days}d ${hours}h ${minutes}m ${secs}s`;
+
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                clearInterval(timerInterval);
+            }
+        }
+
+        updateCountdown();
+        const timerInterval = setInterval(updateCountdown, 1000);
+    }
+
+    // Registration countdown
+    const registrationRemaining = parseInt("{{ registration_remaining|default:0 }}", 10);
+    if (registrationRemaining > 0) {
+        startCountdown(registrationRemaining, 'registration-timer');
+    }
+
+    // Preparation countdown
+    const preparationRemaining = parseInt("{{ preparation_remaining|default:0 }}", 10);
+    if (preparationRemaining > 0) {
+        startCountdown(preparationRemaining, 'preparation-timer');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/user_dashboard.css' %}">
+</head>
+<body>
+
+<div class="dashboard-container">
+    <!-- Welcome Section -->
+    <header class="dashboard-header">
+        <h1>Welcome, {{ request.user.first_name }}</h1>
+        <p>{{ current_phase_message }}</p>
+    </header>
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+        <h2>Profile</h2>
+        <p><strong>Status:</strong> {{ user_status }}</p>
+        <p><strong>Email:</strong> {{ request.user.email }}</p>
+        <a href="{% url 'update_profile' %}" class="button">Update Profile</a>
+    </section>
+
+    <!-- Navigation Links -->
+    <nav class="dashboard-nav">
+        <ul>
+            
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'apply_candidate' %}">Apply for Candidacy</a></li>
+            <li><a href="{% url 'candidates_list' %}">View Candidates</a></li>
+            <li><a href="{% url 'vote' %}">Vote Now</a></li>
+            <li><a href="{% url 'submit_feedback' %}">Feedback</a></li>
+            <li><a href="{% url 'notifications' %}">Notifications 
+                {% if unread_count > 0 %}
+                    ({{ unread_count }})
+                {% endif %}
+            </a></li>
+
+            
+        </ul>
+    </nav>
+
+
+    <!-- Candidates Section (Shows a preview) -->
+    <section class="candidates-preview">
+        <h2>Featured Candidates</h2>
+        <div class="candidates-list">
+            {% for candidate in candidates %}
+                <div class="candidate-card">
+                    <h3>{{ candidate.user.first_name }} {{ candidate.user.last_name }}</h3>
+                    <p><strong>Position:</strong> {{ candidate.position.name }}</p>
+                    <p>{{ candidate.manifesto|truncatewords:15 }}</p>
+                    <a href="{% url 'vote' %}" class="button">Vote for {{ candidate.user.first_name }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

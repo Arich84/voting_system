@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superuser Feedback</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { text-align: center; }
+        .feedback-section, .new-feedback-section { margin-bottom: 20px; }
+        .feedback-card { background-color: #f9f9f9; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; }
+        textarea, select { width: 100%; padding: 10px; margin-top: 5px; }
+        button { padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h2>Superuser Feedback Page</h2>
+    
+    <div class="feedback-section">
+        <h3>All Feedback</h3>
+        {% for feedback in feedbacks %}
+            <div class="feedback-card">
+                <p><strong>Message:</strong> {{ feedback.message }}</p>
+                <p><strong>Response:</strong> {% if feedback.response %}{{ feedback.response }}{% else %}No response yet{% endif %}</p>
+                <p><strong>Status:</strong> {% if feedback.is_resolved %}Resolved{% else %}Unresolved{% endif %}</p>
+                
+                {% if not feedback.is_resolved %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <textarea name="response" placeholder="Enter your response"></textarea>
+                        <button type="submit">Respond</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="new-feedback-section">
+        <h3>Submit New Feedback</h3>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="new_feedback" placeholder="Your feedback here"></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+<h2>Feedback Directed to Superuser</h2>
+<div class="feedback-list">
+    {% for feedback in feedbacks %}
+        <div class="feedback-item">
+            <h3>{{ feedback.user.username }} - {{ feedback.created_at|date:"F j, Y, g:i a" }}</h3>
+            <p>{{ feedback.message }}</p>
+            <p>Priority: {{ feedback.get_priority_display }}</p>
+            {% if feedback.is_resolved %}
+                <p><strong>Status:</strong> Resolved</p>
+            {% else %}
+                <p><strong>Status:</strong> Unresolved</p>
+            {% endif %}
+            <a href="{% url 'feedback_chat' feedback.id %}">View Conversation</a>
+        </div>
+    {% empty %}
+        <p>No feedback directed to Superuser at the moment.</p>
+    {% endfor %}
+</div>
+
+
+</body>
+</html>
