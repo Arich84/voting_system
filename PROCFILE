@@ -1,2 +1,2 @@
-web: gunicorn automatedvote.wsgi --log-file -
-
+web: gunicorn 'automatedvote.wsgi.wsgi'
+web: python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:$PORT
